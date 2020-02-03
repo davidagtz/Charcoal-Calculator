@@ -11,7 +11,7 @@ export default class TitleBar extends Component {
         return (
             <div id="titlebar">
                 {children}
-                <span>Title</span>
+                <span>{document.title}</span>
                 <div id="win-buttons">
                     <div>
                         <div id="min" onClick={this.minimize} />
