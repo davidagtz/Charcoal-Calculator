@@ -8,7 +8,7 @@ const baseConfig = require('./webpack.base.config');
 module.exports = merge.smart(baseConfig, {
     target: 'electron-renderer',
     entry: {
-        app: ['@babel/polyfill','./src/renderer/app.tsx']
+        app: ['@babel/polyfill', './src/renderer/app.tsx']
     },
     module: {
         rules: [
@@ -20,20 +20,15 @@ module.exports = merge.smart(baseConfig, {
                     cacheDirectory: true,
                     babelrc: false,
                     presets: [
-                        [
-                            '@babel/preset-env',
-                            { targets: { browsers: 'last 2 versions ' } }
-                        ],
+                        ['@babel/preset-env', { targets: { browsers: 'last 2 versions ' } }],
                         '@babel/preset-typescript',
                         '@babel/preset-react'
                     ],
-                    plugins: [
-                        ['@babel/plugin-proposal-class-properties', { loose: true }]
-                    ]
+                    plugins: [['@babel/plugin-proposal-class-properties', { loose: true }]]
                 }
             },
             {
-                test: /\.scss$/,
+                test: /\.sass$/,
                 loaders: ['style-loader', 'css-loader', 'sass-loader']
             },
             {
@@ -62,7 +57,7 @@ module.exports = merge.smart(baseConfig, {
     },
     plugins: [
         new ForkTsCheckerWebpackPlugin({
-            reportFiles: ['src/renderer/**/*']
+            reportFiles: ['./src/renderer/**/*']
         }),
         new webpack.NamedModulesPlugin(),
         new HtmlWebpackPlugin(),

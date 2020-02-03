@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-require('./Counter.scss');
+require('../styles/Counter.sass');
 const redCubeImg = require('./RedCube.jpg');
 
 export interface Props {
@@ -12,6 +12,18 @@ export interface Props {
 
 const Counter: React.FunctionComponent<Props> = ({ value, incrementValue, decrementValue }) => (
     <div className="counter">
+        <p>
+            <img src={redCubeImg} />
+        </p>
+        <p>
+            <img src={redCubeImg} />
+        </p>
+        <p>
+            <img src={redCubeImg} />
+        </p>
+        <p>
+            <img src={redCubeImg} />
+        </p>
         <p>
             <img src={redCubeImg} />
         </p>

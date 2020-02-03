@@ -1,6 +1,7 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, Menu } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
+import menu from './menu';
 
 let win: BrowserWindow | null;
 
@@ -19,7 +20,9 @@ const createWindow = async () => {
         await installExtensions();
     }
 
-    win = new BrowserWindow({ width: 800, height: 600 });
+    win = new BrowserWindow({ width: 800, height: 600, frame: false });
+    const m = Menu.buildFromTemplate(menu(win));
+    Menu.setApplicationMenu(m);
 
     if (process.env.NODE_ENV !== 'production') {
         process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = '1';
@@ -49,13 +52,9 @@ const createWindow = async () => {
 app.on('ready', createWindow);
 
 app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-        app.quit();
-    }
+    if (process.platform !== 'darwin') app.quit();
 });
 
 app.on('activate', () => {
-    if (win === null) {
-        createWindow();
-    }
+    if (win === null) createWindow();
 });

@@ -1,0 +1,87 @@
+@import "Variables"
+
+#titlebar
+     $bgc: #111
+     color: #DDD
+     font-family: Helvetica
+     background-color: $bgc
+     font-size: $text
+     user-select: none
+     -webkit-app-region: drag
+     position: fixed
+     top: 0
+     z-index: 99999
+     width: 100%
+     .title-button
+          height: $text
+          -webkit-app-region: no-drag
+          display: inline-block
+          user-select: none
+          padding: $pad
+          overflow: 
+          .list
+               display: none
+               position: absolute
+          &:hover
+               background-color: $bgc + #111
+               .list 
+                    background-color: $bgc + #111
+                    display: block
+                    top: $height
+                    margin-left: -$pad
+                    .separator
+                         background-color: #333
+                         height: 1px
+                         padding: 0
+                         margin: 0 $pad 0 $pad
+                         &:hover
+                              background-color: #333
+                    div
+                         padding: $pad
+                         &:hover
+                              background-color: $bgc + #0A0A0A
+                         &:active
+                              background-color: $bgc + #040404
+     >span
+          user-select: none
+          padding: $pad
+          position: absolute
+          right: 0
+          top: 0
+          margin-right: 50%
+          transform: translate(50%, 0)
+     #win-buttons
+          display: inline-block
+          height: $height
+          float: right
+          margin-right: .3rem
+          div
+               -webkit-app-region: no-drag
+               $h: .75rem
+               height: $height
+               margin-right: .7rem
+               width: $h
+               display: inline-block
+               div
+                    display: inline-block
+                    height: $h
+                    width: $h
+                    border-radius: 50%
+                    margin-top: ($height - $h) / 2
+                    margin-bottom: ($height - $h) / 2
+               $darken: #222
+               #min
+                    $color: #ffff00
+                    background-color: $color
+                    &:hover
+                         background-color: $color - $darken 
+               #min-max
+                    $color: #00dd00
+                    background-color: $color
+                    &:hover
+                         background-color: $color - $darken 
+               #quit
+                    $color: #ff0000
+                    background-color: $color
+                    &:hover
+                         background-color: $color - $darken
