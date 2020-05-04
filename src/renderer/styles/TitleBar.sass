@@ -1,3 +1,4 @@
+@use "sass:color" as color
 @import "Variables"
 
 #titlebar
@@ -23,9 +24,9 @@
                display: none
                position: absolute
           &:hover
-               background-color: $bgc + #111
+               background-color: lighten($bgc, 10%)
                .list 
-                    background-color: $bgc + #111
+                    background-color: lighten($bgc, 10%)
                     display: block
                     top: $height
                     margin-left: -$pad
@@ -39,9 +40,9 @@
                     div
                          padding: $pad
                          &:hover
-                              background-color: $bgc + #0A0A0A
+                              background-color: lighten($bgc, 5%)
                          &:active
-                              background-color: $bgc + #040404
+                              background-color: lighten($bgc, 3%)
      >span
           user-select: none
           padding: $pad
@@ -69,19 +70,19 @@
                     border-radius: 50%
                     margin-top: ($height - $h) / 2
                     margin-bottom: ($height - $h) / 2
-               $darken: #222
+               $darken: 20%
                #min
                     $color: #ffff00
                     background-color: $color
                     &:hover
-                         background-color: $color - $darken 
+                         background-color: darken($color, $darken) 
                #min-max
                     $color: #00dd00
                     background-color: $color
                     &:hover
-                         background-color: $color - $darken 
+                         background-color: darken($color, $darken) 
                #quit
                     $color: #ff0000
                     background-color: $color
                     &:hover
-                         background-color: $color - $darken
+                         background-color: darken($color, $darken)

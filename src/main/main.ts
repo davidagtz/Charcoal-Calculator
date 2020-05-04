@@ -20,7 +20,14 @@ const createWindow = async () => {
         await installExtensions();
     }
 
-    win = new BrowserWindow({ width: 800, height: 600, frame: false });
+    win = new BrowserWindow({
+        width: 800,
+        height: 600,
+        frame: false,
+        webPreferences: {
+            webSecurity: false
+        }
+    });
     const m = Menu.buildFromTemplate(menu(win));
     Menu.setApplicationMenu(m);
 

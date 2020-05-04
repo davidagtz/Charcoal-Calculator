@@ -5,7 +5,6 @@ require('../styles/TitleBar.sass');
 export default class TitleBar extends Component {
     render() {
         const menu = remote.Menu.getApplicationMenu();
-        console.log(menu);
         let children: JSX.Element[] = [];
         if (menu) children = this.buildMenu(menu.items);
         return (
@@ -29,7 +28,9 @@ export default class TitleBar extends Component {
 
     buildMenu(items: MenuItem[]): JSX.Element[] {
         const children = [];
-        for (const e of items) {
+        /* tslint:disable */
+        for (let i = 0; i < items.length; i++) {
+            const e: any = items[i];
             children.push(
                 <div key={e.label} className="title-button" onClick={() => e.click()}>
                     <span>{e.label}</span>
@@ -37,17 +38,18 @@ export default class TitleBar extends Component {
                 </div>
             );
         }
+        /* tslint:enable */
         return children;
     }
 
     buildSubmenu(items: MenuItem[]): JSX.Element {
         const children = [];
-        console.log(items);
-        for (const item of items) {
+        for (let i = 0; i < items.length; i++) {
+            const item: any = items[i];
             let className = undefined;
             if (item.type === 'separator') className = 'separator';
             children.push(
-                <div className={className} onClick={() => item.click()}>
+                <div key={i} className={className} onClick={() => item.click()}>
                     {item.label}
                 </div>
             );

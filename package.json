@@ -78,10 +78,10 @@
         "url": "git+ssh://git@github.com:Robinfr/electron-react-typescript.git"
     },
     "author": {
-        "name": "Your name",
-        "email": "Your email"
+        "name": "David Gutierrez",
+        "email": "david.a.gutierrez99@gmail.com"
     },
-    "license": "SEE LICENSE",
+    "license": "GPL-3.0-only",
     "bugs": {
         "url": "https://github.com/Robinfr/electron-react-typescript/issues"
     },
@@ -136,7 +136,9 @@
         "webpack-merge": "^4.2.1"
     },
     "dependencies": {
+        "@types/mathjax": "^0.0.36",
         "custom-electron-titlebar": "^3.2.1",
+        "mathjax-electron": "^3.0.0",
         "react": "^16.8.6",
         "react-dom": "^16.8.6",
         "react-redux": "^7.0.3",
