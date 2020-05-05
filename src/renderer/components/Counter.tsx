@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 require('../styles/Counter.sass');
-const redCubeImg = require('./RedCube.jpg');
+const redCubeImg = require('./res/RedCube.jpg');
 
 export interface Props {
     value: number;
