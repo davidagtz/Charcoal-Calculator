@@ -33,13 +33,13 @@ function texize(tree: ParseNode): string {
 			case "*":
 				return `${left}*${right}`;
 			case "/":
-				return `${left}/${right}`;
+				return `\\frac {${left}}{${right}}`;
 			case "+":
 				return `${left}+${right}`;
 			case "-":
 				return `${left}-${right}`;
 			case "^":
-				return `${left}^${right}`;
+				return `{${left}}^{${right}}`;
 		}
 	}
 	throw new Error("Node Type not supported");

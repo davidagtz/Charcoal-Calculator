@@ -4,6 +4,7 @@ $regular: #686868
 .formatted-input
      display: block
      width: 100%
+     font-family: Cambria, Cochin, Georgia, Times, Times New Roman, serif
      >div
           display: table
           width: 100%
@@ -16,7 +17,6 @@ $regular: #686868
                padding-top: 0
                border: 0
                margin: 0
-               font-family: Cambria, Cochin, Georgia, Times, Times New Roman, serif
                border-bottom: .125em solid $regular
                box-sizing: border-box
                vertical-align: top
@@ -25,11 +25,14 @@ $regular: #686868
                &:focus
                     outline: none
           .ans
+               min-width: 10%
                width: 10%
                display: table-cell
                background-color: $regular
                vertical-align: middle
-               padding: .125em
+               padding: .2em
                font-size: 2em
+               border-bottom: .125em solid $regular
+               box-sizing: border-box
                &.error
                     background-color: $error

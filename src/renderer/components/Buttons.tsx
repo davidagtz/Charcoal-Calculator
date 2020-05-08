@@ -17,33 +17,62 @@ export default class Buttons extends Component {
 function createNumbers() {
     const oneToThree = (
         <tr>
-            <td>1</td>
-            <td>2</td>
-            <td>3</td>
+            <td id="1">1</td>
+            <td id="2">2</td>
+            <td id="3">3</td>
         </tr>
     );
     const fourToSix = (
         <tr>
-            <td>4</td>
-            <td>5</td>
-            <td>6</td>
+            <td id="4">4</td>
+            <td id="5">5</td>
+            <td id="6">6</td>
         </tr>
     );
     const sevenToNine = (
         <tr>
-            <td>7</td>
-            <td>8</td>
-            <td>9</td>
+            <td id="7">7</td>
+            <td id="8">8</td>
+            <td id="9">9</td>
         </tr>
     );
     const last = (
         <tr>
             <td>{PlusMinus}</td>
-            <td>0</td>
+            <td id="0">0</td>
             <td>
                 <span className="vertical-center">.</span>
             </td>
         </tr>
     );
     return [oneToThree, fourToSix, sevenToNine, last];
+}
+
+var isActive = false;
+
+export function addListeners() {
+    document.addEventListener('keydown', e => {
+        if (isActive) return;
+        if (e.keyCode >= 48 && e.keyCode <= 57) {
+            addClass(e.key, 'active');
+            isActive = true;
+        }
+    });
+    document.addEventListener('keyup', e => {
+        if (e.keyCode >= 48 && e.keyCode <= 57) {
+            removeClass(e.key, 'active');
+            isActive = false;
+        }
+    });
+}
+
+function addClass(id: string, add: string) {
+    document.getElementById(id)!.className += ' ' + add;
+}
+
+function removeClass(id: string, remove: string) {
+    let c = document.getElementById(id)!.className;
+    let classes = c.split(' ');
+    classes = classes.filter(e => remove !== e);
+    document.getElementById(id)!.className = classes.join(' ');
 }
