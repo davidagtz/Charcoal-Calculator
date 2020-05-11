@@ -1,4 +1,5 @@
 import { Action, ActionCreator } from 'redux';
+import { VarFunction } from '../components/brains/Types';
 
 export const CHG_EXP = 'CHG_EXP';
 

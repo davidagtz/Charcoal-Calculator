@@ -9,11 +9,12 @@ html, body
           display: none
 
 .big-body
-     overflow-y: auto
+     overflow-y: hidden
+     overflow-x: hidden
      position: absolute
      width: 100%
      top: $height
-     display: block
+     display: flex
      height: calc(100% - #{$height})
      color: white
      &::-webkit-scrollbar
@@ -41,3 +42,16 @@ html, body
 .resize
      outline: 1px solid #000
      background-color: $background
+     vertical-align: top
+     display: inline-block
+     position: relative
+     width: 50%
+     user-select: none
+     height: 100%
+     .resizer
+          width: 10px
+          position: absolute
+          right: -5px
+          cursor: ew-resize
+          height: 100%
+          top: 0
