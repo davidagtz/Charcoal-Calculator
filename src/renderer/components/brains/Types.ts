@@ -34,6 +34,7 @@ export interface VarFunction {
 }
 
 export interface ExpressionProps {
-    expression: VarFunction;
-    changeExpression: (exp: VarFunction) => void;
+    expressions: VarFunction[];
+    changeExpression: (i: number, exp: VarFunction) => void;
+    addExpression: (exp: VarFunction) => void;
 }

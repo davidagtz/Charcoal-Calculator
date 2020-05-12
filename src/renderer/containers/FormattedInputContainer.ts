@@ -3,15 +3,16 @@ import { Dispatch } from 'redux';
 
 import FormattedInput from '../components/FormattedInput';
 import { RootState } from '../reducers';
-import { InputAction, chgExp } from '../actions/formattedInputActions';
+import { InputAction, chgExp, addExp } from '../actions/formattedInputActions';
 import { VarFunction } from '../components/brains/Types';
 
 const mapStateToProps = (state: RootState) => ({
-    expression: state.input.expression
+    expressions: state.input.expressions
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<InputAction>) => ({
-    changeExpression: (exp: VarFunction) => dispatch(chgExp(exp))
+    changeExpression: (i: number, exp: VarFunction) => dispatch(chgExp(i, exp)),
+    addExpression: (exp: VarFunction) => dispatch(addExp(exp))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormattedInput);

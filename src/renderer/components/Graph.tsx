@@ -1,12 +1,15 @@
 import React from 'React';
 import Canvas from './Tools/Canvas';
-import { VarFunction } from './brains/Types';
+import { VarFunction, ExpressionProps } from './brains/Types';
 import { solve } from './brains/Calculator';
 require('../styles/Graph.sass');
 
-export default class Graph extends Canvas<{ id: string; expression: VarFunction | null }> {
+interface Props extends ExpressionProps {
+    id: string;
+}
+
+export default class Graph extends Canvas<Props> {
     size: number;
-    equations: VarFunction | null;
 
     render() {
         return (
@@ -17,7 +20,6 @@ export default class Graph extends Canvas<{ id: string; expression: VarFunction 
     }
 
     componentDidUpdate() {
-        this.equations = this.props.expression;
         let cvs: any = document.getElementById(this.props.id);
         let cvs_parent: any = document.getElementById(this.props.id + '-parent');
         cvs_parent.scrollTop = (cvs_parent.scrollHeight - cvs_parent.clientHeight) / 2;
@@ -62,15 +64,18 @@ export default class Graph extends Canvas<{ id: string; expression: VarFunction 
             this.line(-width / 2, i, width / 2, i);
         }
 
-        if (this.equations && this.equations.arguments.length <= 1) {
-            this.stroke('#00f');
-            this.strokeWeight(4);
+        for (let i = 0; i < this.props.expressions.length; i++) {
+            const eq = this.props.expressions[i];
+            if (eq && eq.arguments.length <= 1) {
+                this.stroke('#00f');
+                this.strokeWeight(4);
 
-            let y = this.size * solve(-width / 2 / this.size, this.equations);
-            for (let x = -width / 2 + 1; x < width / 2; x += 1) {
-                let ny = this.size * solve(x / this.size, this.equations);
-                this.line(x - 1, y, x, ny);
-                y = ny;
+                let y = this.size * solve(-width / 2 / this.size, eq);
+                for (let x = -width / 2 + 1; x < width / 2; x += 1) {
+                    let ny = this.size * solve(x / this.size, eq);
+                    this.line(x - 1, y, x, ny);
+                    y = ny;
+                }
             }
         }
 
@@ -94,6 +99,5 @@ export default class Graph extends Canvas<{ id: string; expression: VarFunction 
             this.componentDidUpdate();
         };
         this.size = 15;
-        this.equations = null;
     }
 }
