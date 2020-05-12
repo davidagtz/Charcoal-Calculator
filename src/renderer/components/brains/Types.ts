@@ -28,4 +28,12 @@ export function InvalidCharacterError(char: any): Error {
     return err;
 }
 
-export interface VarFunction {}
+export interface VarFunction {
+    arguments: string[];
+    root: ParseNode;
+}
+
+export interface ExpressionProps {
+    expression: VarFunction;
+    changeExpression: (exp: VarFunction) => void;
+}

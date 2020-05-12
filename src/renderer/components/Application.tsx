@@ -4,7 +4,7 @@ import * as React from 'react';
 import TitleBar from './TitleBar';
 import ButtonsContainer from '../containers/ButtonsContainer';
 import FormattedInputContainer from '../containers/FormattedInputContainer';
-import Graph from './Graph';
+import GraphConatiner from '../containers/GraphContainer';
 import Resizer from './Tools/Resizer';
 
 require('../styles/Application.sass');
@@ -17,7 +17,7 @@ const Application = () => (
             <Resizer id="calc-graph">
                 <FormattedInputContainer />
                 <ButtonsContainer />
-                <Graph id="graph" />
+                <GraphConatiner id="graph" />
             </Resizer>
         </div>
     </div>

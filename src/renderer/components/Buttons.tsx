@@ -53,13 +53,13 @@ var isActive = false;
 export function addListeners() {
     document.addEventListener('keydown', e => {
         if (isActive) return;
-        if (e.keyCode >= 48 && e.keyCode <= 57) {
+        if (e.charCode >= 48 && e.charCode <= 57) {
             addClass(e.key, 'active');
             isActive = true;
         }
     });
     document.addEventListener('keyup', e => {
-        if (e.keyCode >= 48 && e.keyCode <= 57) {
+        if (e.charCode >= 48 && e.charCode <= 57) {
             removeClass(e.key, 'active');
             isActive = false;
         }

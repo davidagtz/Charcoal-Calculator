@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import Parser from './brains/Parser';
+import Parser, { isFunction, toFunction } from './brains/Parser';
 import calculate, { toTex } from './brains/Calculator';
 import { loadMathJax } from '../mathjax-electron/index';
+import { ExpressionProps } from './brains/Types';
 require('../styles/FormattedInput.sass');
 
-export default class FormattedInput extends Component {
+export default class FormattedInput extends Component<ExpressionProps> {
     state = {
         html: '$$E = c^{\\frac {3}{5}}$$',
         error: null,
@@ -26,14 +27,17 @@ export default class FormattedInput extends Component {
             let tree = parser.parse();
             let tex = '';
             let result = 0;
-            if (tree) {
+            if (isFunction(tree)) {
+                this.props.changeExpression(toFunction(tree)!);
+                if (tree) tex = toTex(tree);
+            } else if (tree) {
                 result = calculate(tree);
                 tex = toTex(tree);
             }
             this.setState({ error: null, value: result, html: tex });
         } catch (e) {
             this.setState({ error: e.message, result: null, html: '' });
-            // console.error(e);
+            console.error(e);
         }
     }
 

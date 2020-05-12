@@ -5,7 +5,7 @@ export const CHG_EXP = 'CHG_EXP';
 
 export interface ChgExpAction extends Action {
     type: 'CHG_EXP';
-    exp: string;
+    exp: VarFunction;
 }
 
 export const chgExp: ActionCreator<ChgExpAction> = exp => ({

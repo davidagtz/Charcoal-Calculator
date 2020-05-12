@@ -1,13 +1,14 @@
 import { Reducer } from 'redux';
 
 import { CHG_EXP, InputAction } from '../actions/formattedInputActions';
+import { VarFunction } from '../components/brains/Types';
 
 export interface InputState {
-    readonly expression: string;
+    readonly expression: VarFunction | null;
 }
 
 const defaultState: InputState = {
-    expression: ''
+    expression: null
 };
 
 export const formattedInputReducer: Reducer<InputState, InputAction> = (
