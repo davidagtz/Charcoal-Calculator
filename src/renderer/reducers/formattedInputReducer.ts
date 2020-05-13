@@ -17,7 +17,9 @@ export const formattedInputReducer: Reducer<InputState, InputAction> = (
 ) => {
     switch (action.type) {
         case CHG_EXP:
-            let expressions = state.expressions;
+            let expressions = new Array(state.expressions.length)
+                .fill(0)
+                .map((e, i) => state.expressions[i]);
             expressions[action.i] = action.exp;
             return {
                 ...state,
