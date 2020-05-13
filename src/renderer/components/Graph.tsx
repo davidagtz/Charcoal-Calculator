@@ -129,7 +129,6 @@ export default class Graph extends Canvas<Props> {
     up() {
         this.mouse.active = false;
     }
-
     drag(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
         if (!this.mouse.active) return;
         this.offset.x += this.mouse.x - e.clientX;
@@ -142,6 +141,7 @@ export default class Graph extends Canvas<Props> {
     constructor(props: any) {
         super(props);
         this.componentDidMount = () => {
+            window.addEventListener('resize', this.componentDidUpdate.bind(this));
             this.componentDidUpdate();
         };
         this.size = 15;
@@ -157,5 +157,8 @@ export default class Graph extends Canvas<Props> {
         this.down = this.down.bind(this);
         this.up = this.up.bind(this);
         this.drag = this.drag.bind(this);
+
+        // window.addEventListener('resize', this.componentDidUpdate);
+        // window.addEventListener('resize', () => console.log('HEYY'));
     }
 }
