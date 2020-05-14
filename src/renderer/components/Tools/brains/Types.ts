@@ -23,7 +23,7 @@ export interface OP {
 }
 
 export function InvalidCharacterError(char: any): Error {
-    let err = new Error('Invalid Character: "' + char + '"');
+    const err = new Error(`Invalid Character: "${char}"`);
     err.name = 'Invalid Character Error';
     return err;
 }
@@ -34,7 +34,7 @@ export interface VarFunction {
 }
 
 export interface ExpressionProps {
-    expressions: VarFunction[];
-    changeExpression: (i: number, exp: VarFunction) => void;
-    addExpression: (exp: VarFunction) => void;
+    expressions: (VarFunction | null)[];
+    changeExpression: (i: number, exp: VarFunction | null) => void;
+    addExpression: (exp: VarFunction | null) => void;
 }

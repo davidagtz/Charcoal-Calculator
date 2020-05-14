@@ -33,7 +33,7 @@ export default class Parser {
                 right = this.parseRightOp(right, cur + 1);
                 if (!right) throw new Error('Expected Expression');
             }
-            newLeft = makeParseNode(val.op, TYPE.OPERATION, left, right);
+            newLeft = makeParseNode(val.op, TYPE.OPERATION, newLeft, right);
         }
     }
 

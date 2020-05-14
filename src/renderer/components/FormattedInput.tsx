@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import Parser, { isFunction, toFunction } from './brains/Parser';
-import calculate, { toTex } from './brains/Calculator';
+import Parser, { isFunction, toFunction } from './Tools/brains/Parser';
+import calculate, { toTex } from './Tools/brains/Calculator';
 import { loadMathJax } from '../mathjax-electron/index';
-import { ExpressionProps } from './brains/Types';
+import { ExpressionProps } from './Tools/brains/Types';
 require('../styles/FormattedInput.sass');
 
 export default class FormattedInput extends Component<ExpressionProps> {
@@ -37,7 +37,7 @@ export default class FormattedInput extends Component<ExpressionProps> {
                 let tex = '';
                 let result = 0;
                 if (isFunction(tree)) {
-                    if (this.props.expressions.length === this.state.rows) {
+                    if (this.props.expressions.length > rowNumber) {
                         this.props.changeExpression(rowNumber, toFunction(tree)!);
                     } else {
                         this.props.addExpression(toFunction(tree)!);
@@ -56,10 +56,12 @@ export default class FormattedInput extends Component<ExpressionProps> {
                 this.setState({ error: errors, value: results, html: tex });
             } catch (e) {
                 const errors = this.state.error;
-                errors[rowNumber] = true;
+                if (i.value.trim() !== '') errors[rowNumber] = true;
+                else errors[rowNumber] = false;
                 const results = this.state.value;
                 results[rowNumber] = 0;
                 this.setState({ error: errors, result: results, html: '' });
+                this.props.changeExpression(rowNumber, null);
                 console.error(e);
             }
         };
@@ -78,6 +80,7 @@ export default class FormattedInput extends Component<ExpressionProps> {
     addRow(e: React.KeyboardEvent<HTMLInputElement>) {
         if (e.charCode === 13) {
             this.changeFocus = this.state.rows;
+            this.props.addExpression(null);
             this.setState({ rows: this.state.rows + 1 });
         }
     }

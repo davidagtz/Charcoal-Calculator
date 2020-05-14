@@ -1,7 +1,7 @@
 import React from 'react';
 import Canvas from './Tools/Canvas';
-import { ExpressionProps } from './brains/Types';
-import { solve } from './brains/Calculator';
+import { ExpressionProps } from './Tools/brains/Types';
+import { solve } from './Tools/brains/Calculator';
 require('../styles/Graph.sass');
 
 interface Props extends ExpressionProps {
@@ -19,6 +19,7 @@ export default class Graph extends Canvas<Props> {
         x: number;
         y: number;
     };
+    colors: string[];
 
     render() {
         return (
@@ -88,7 +89,7 @@ export default class Graph extends Canvas<Props> {
         for (let i = 0; i < this.props.expressions.length; i += 1) {
             const eq = this.props.expressions[i];
             if (eq && eq.arguments.length <= 1) {
-                this.stroke('#00f');
+                this.stroke(this.colors[i % this.colors.length]);
                 this.strokeWeight(4);
 
                 let prevY = solve((-width / 2 + this.offset.x) / this.size, eq);
@@ -162,7 +163,6 @@ export default class Graph extends Canvas<Props> {
         this.drag = this.drag.bind(this);
         this.scroll = this.scroll.bind(this);
 
-        // window.addEventListener('resize', this.componentDidUpdate);
-        // window.addEventListener('resize', () => console.log('HEYY'));
+        this.colors = ['#02a2ff', '#ff0252', '#52ff02'];
     }
 }
