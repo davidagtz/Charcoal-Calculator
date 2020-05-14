@@ -137,6 +137,7 @@
     },
     "dependencies": {
         "@types/mathjax": "^0.0.36",
+        "ajv": "^6.12.2",
         "custom-electron-titlebar": "^3.2.1",
         "mathjax-electron": "^3.0.0",
         "react": "^16.8.6",

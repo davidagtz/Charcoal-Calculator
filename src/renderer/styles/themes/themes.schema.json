@@ -1,0 +1,95 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "type": "object",
+    "title": "Charcoal Theme",
+    "description": "Provides a color scheme for Charcoal",
+    "properties": {
+        "Graph": {
+            "type": "object",
+            "properties": {
+                "background": {
+                    "type": "string"
+                },
+                "axis": {
+                    "type": "string"
+                },
+                "font": {
+                    "type": "string"
+                },
+                "equationColors": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "uniqueItems": true,
+                    "minItems": 1
+                }
+            },
+            "required": ["background", "axis", "font", "equation_colors"]
+        },
+        "Calculator": {
+            "type": "object",
+            "properties": {
+                "input": {
+                    "type": "object",
+                    "properties": {
+                        "font": {
+                            "type": "string"
+                        },
+                        "answerFont": {
+                            "type": "string"
+                        },
+                        "answerBackground": {
+                            "type": "string"
+                        },
+                        "background": {
+                            "type": "string"
+                        }
+                    },
+                    "required": ["font", "answerFont", "answerBackground", "background"]
+                },
+                "background": {
+                    "type": "string"
+                },
+                "buttons": {
+                    "type": "object",
+                    "properties": {
+                        "color": {
+                            "type": "string"
+                        },
+                        "font": {
+                            "type": "string"
+                        }
+                    },
+                    "required": ["color", "font"]
+                }
+            },
+            "required": ["input", "background", "buttons"]
+        },
+        "TitleBar": {
+            "type": "object",
+            "properties": {
+                "font": {
+                    "type": "string"
+                },
+                "background": {
+                    "type": "string"
+                },
+                "buttons": {
+                    "type": "object",
+                    "properties": {
+                        "hover": {
+                            "type": "string"
+                        },
+                        "active": {
+                            "type": "string"
+                        }
+                    },
+                    "required": ["hover", "active"]
+                }
+            },
+            "required": ["font", "background", "buttons"]
+        }
+    },
+    "required": ["Graph", "Calculator", "TitleBar"]
+}

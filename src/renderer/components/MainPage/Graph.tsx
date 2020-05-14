@@ -34,7 +34,6 @@ export default class Graph extends Canvas<Props> {
     }
 
     componentDidUpdate() {
-        // return;
         const cvs = document.getElementById(this.props.id) as HTMLCanvasElement;
         cvs.width = cvs.clientWidth;
         cvs.height = cvs.clientHeight;
