@@ -23,29 +23,24 @@ export default class Graph extends Canvas<Props> {
 
     render() {
         return (
-            <div
-                id={this.props.id + '-parent'}
-                onScroll={this.scroll}
+            <canvas
+                id={this.props.id}
+                onWheel={this.wheel}
                 onMouseDown={this.down}
                 onMouseUp={this.up}
                 onMouseMove={this.drag}
-            >
-                <canvas id={this.props.id} />
-            </div>
+            />
         );
     }
 
     componentDidUpdate() {
-        const cvs: HTMLCanvasElement = document.getElementById(this.props.id) as HTMLCanvasElement;
-        const cvs_parent: HTMLDivElement = document.getElementById(
-            this.props.id + '-parent'
-        ) as HTMLDivElement;
-        cvs_parent.scrollTop = (cvs_parent.scrollHeight - cvs_parent.clientHeight) / 2;
+        // return;
+        const cvs = document.getElementById(this.props.id) as HTMLCanvasElement;
         cvs.width = cvs.clientWidth;
         cvs.height = cvs.clientHeight;
         this.ctx = cvs.getContext('2d');
-        const width: number = cvs.width;
-        const height: number = cvs.height;
+        const width = cvs.width;
+        const height = cvs.height;
         this.width = width;
         this.height = height;
 
@@ -107,21 +102,17 @@ export default class Graph extends Canvas<Props> {
         }
     }
 
-    scroll() {
-        const cvs_parent = document.getElementById(this.props.id + '-parent') as HTMLDivElement;
-        let avg = (cvs_parent.scrollHeight - cvs_parent.clientHeight) / 2;
-        avg = Math.floor(avg);
+    wheel(e: React.WheelEvent<HTMLCanvasElement>) {
         const diff = 1.1;
-        if (cvs_parent.scrollTop < avg) {
+        if (e.deltaY > 0) {
             this.size *= diff;
-        } else if (cvs_parent.scrollTop !== avg) {
+        } else if (e.deltaY < 0) {
             this.size /= diff;
         }
-        cvs_parent.scrollTop = avg;
         this.componentDidUpdate();
     }
 
-    down(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    down(e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
         this.mouse.active = true;
         this.mouse.x = e.clientX;
         this.mouse.y = e.clientY;
@@ -130,7 +121,7 @@ export default class Graph extends Canvas<Props> {
     up() {
         this.mouse.active = false;
     }
-    drag(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+    drag(e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
         if (!this.mouse.active) return;
         this.offset.x += this.mouse.x - e.clientX;
         this.offset.y -= this.mouse.y - e.clientY;
@@ -161,7 +152,7 @@ export default class Graph extends Canvas<Props> {
         this.down = this.down.bind(this);
         this.up = this.up.bind(this);
         this.drag = this.drag.bind(this);
-        this.scroll = this.scroll.bind(this);
+        this.wheel = this.wheel.bind(this);
 
         this.colors = ['#02a2ff', '#ff0252', '#52ff02'];
     }
