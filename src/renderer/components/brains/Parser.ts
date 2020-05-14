@@ -1,4 +1,4 @@
-import { TYPE, Token, ParseNode, InvalidCharacterError, VarFunction } from './Types';
+import { TYPE, OP, Token, ParseNode, InvalidCharacterError, VarFunction } from './Types';
 import tokenize from './Tokenizer';
 import calculate from './Calculator';
 
@@ -12,64 +12,59 @@ export default class Parser {
     }
 
     parseRightOp(left: ParseNode, prec: number): ParseNode | null {
+        let newLeft = left;
         while (true) {
-            let op = this.now();
-            if (!op) return left;
+            const op = this.now();
+            if (!op) return newLeft;
 
-            if (op.type === TYPE.PARENTHESES && op.value === ')') return left;
+            if (op.type === TYPE.PARENTHESES && op.value === ')') return newLeft;
             if (op.type !== TYPE.OPERATION) throw InvalidCharacterError(op.value);
 
             const cur = this.getPrecedence(op);
-            let val: any = op.value;
+            const val: any = op.value;
 
-            if (cur < prec) return left;
-            this.pos++;
+            if (cur < prec) return newLeft;
+            this.pos += 1;
 
             let right = this.parsePrimary();
             if (!right) throw new Error('Expected Expression');
 
-            // if (this.pos >= this.tokens.length)
-            // 	return makeParseNode(
-            // 		val.op,
-            // 		TYPE.OPERATION,
-            // 		left,
-            // 		right
-            // 	);
             if (cur < this.getPrecedence(this.now())) {
                 right = this.parseRightOp(right, cur + 1);
                 if (!right) throw new Error('Expected Expression');
             }
-            left = makeParseNode(val.op, TYPE.OPERATION, left, right);
+            newLeft = makeParseNode(val.op, TYPE.OPERATION, left, right);
         }
     }
 
     parse(): ParseNode | null {
-        let left = this.parsePrimary();
+        const left = this.parsePrimary();
         if (!left) return null;
         return this.parseRightOp(left, 0);
     }
 
     parseParenExpr(): ParseNode | null {
         if (this.now().value !== '(') throw InvalidCharacterError(this.now().value);
-        this.pos++;
-        let expr = this.parse();
-        if (this.now().type !== TYPE.PARENTHESES || this.now().value !== ')')
+        this.pos += 1;
+        const expr = this.parse();
+        if (this.now().type !== TYPE.PARENTHESES || this.now().value !== ')') {
             throw InvalidCharacterError(this.now().value);
-        this.pos++;
+        }
+        this.pos += 1;
         return expr;
     }
 
     parsePrimary(): ParseNode | null {
         switch (this.now().type) {
             case TYPE.NUMBER:
-                let num: any = this.now().value;
-                this.pos++;
+                const num = this.now().value as number;
+                this.pos += 1;
                 return makeParseNode(num, TYPE.NUMBER);
             case TYPE.OPERATION:
                 throw new Error('Primary Expression cannot start with operation');
             case TYPE.VARIABLE:
-                let variable: any = this.now().value;
-                this.pos++;
+                const variable = this.now().value as string;
+                this.pos += 1;
                 return makeParseNode(variable, TYPE.VARIABLE);
             case TYPE.PARENTHESES:
                 return this.parseParenExpr();
@@ -79,7 +74,7 @@ export default class Parser {
 
     getPrecedence(token: Token = this.now()) {
         if (!token || token.type !== TYPE.OPERATION) return -1;
-        let val: any = token.value;
+        const val = token.value as OP;
         return val.precedence;
     }
 
@@ -123,11 +118,12 @@ function getArguments(tree: ParseNode | null): string[] {
     if (tree === null) return [];
     if (tree.type === TYPE.VARIABLE) return [tree.value as string];
     if (tree.type === TYPE.OPERATION) {
-        let args = getArguments(tree.left);
-        let args_right = getArguments(tree.right);
+        const args = getArguments(tree.left);
+        const args_right = getArguments(tree.right);
 
-        for (let i = 0; i < args_right.length; i++)
+        for (let i = 0; i < args_right.length; i += 1) {
             if (args.indexOf(args_right[i]) === -1) args.push(args_right[i]);
+        }
 
         return args;
     }

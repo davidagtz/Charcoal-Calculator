@@ -1,4 +1,4 @@
-import React from 'React';
+import React from 'react';
 import Canvas from './Tools/Canvas';
 import { ExpressionProps } from './brains/Types';
 import { solve } from './brains/Calculator';
@@ -24,7 +24,7 @@ export default class Graph extends Canvas<Props> {
         return (
             <div
                 id={this.props.id + '-parent'}
-                onScroll={this.scroll.bind(this)}
+                onScroll={this.scroll}
                 onMouseDown={this.down}
                 onMouseUp={this.up}
                 onMouseMove={this.drag}
@@ -35,8 +35,8 @@ export default class Graph extends Canvas<Props> {
     }
 
     componentDidUpdate() {
-        let cvs: HTMLCanvasElement = document.getElementById(this.props.id) as HTMLCanvasElement;
-        let cvs_parent: HTMLDivElement = document.getElementById(
+        const cvs: HTMLCanvasElement = document.getElementById(this.props.id) as HTMLCanvasElement;
+        const cvs_parent: HTMLDivElement = document.getElementById(
             this.props.id + '-parent'
         ) as HTMLDivElement;
         cvs_parent.scrollTop = (cvs_parent.scrollHeight - cvs_parent.clientHeight) / 2;
@@ -60,32 +60,32 @@ export default class Graph extends Canvas<Props> {
 
         this.stroke('#994d0044');
 
-        for (let i = -1; i * this.size >= -width / 2 + this.offset.x; i--) {
-            if (-i % 5 == 0) this.strokeWeight(3);
+        for (let i = -1; i * this.size >= -width / 2 + this.offset.x; i -= 1) {
+            if (-i % 5 === 0) this.strokeWeight(3);
             else this.strokeWeight(1);
             const x = this.size * i - this.offset.x;
             this.line(x, -height / 2, x, height / 2);
         }
-        for (let i = 1; i * this.size <= width / 2 + this.offset.x; i++) {
-            if (i % 5 == 0) this.strokeWeight(3);
+        for (let i = 1; i * this.size <= width / 2 + this.offset.x; i += 1) {
+            if (i % 5 === 0) this.strokeWeight(3);
             else this.strokeWeight(1);
             const x = this.size * i - this.offset.x;
             this.line(x, -height / 2, x, height / 2);
         }
-        for (let i = -1; i * this.size >= -height / 2 + this.offset.y; i--) {
-            if (-i % 5 == 0) this.strokeWeight(3);
+        for (let i = -1; i * this.size >= -height / 2 + this.offset.y; i -= 1) {
+            if (-i % 5 === 0) this.strokeWeight(3);
             else this.strokeWeight(1);
             const y = this.size * i - this.offset.y;
-            this.line(-height / 2, y, height / 2, y);
+            this.line(-width / 2, y, width / 2, y);
         }
-        for (let i = 1; i * this.size <= height / 2 + this.offset.y; i++) {
-            if (i % 5 == 0) this.strokeWeight(3);
+        for (let i = 1; i * this.size <= height / 2 + this.offset.y; i += 1) {
+            if (i % 5 === 0) this.strokeWeight(3);
             else this.strokeWeight(1);
             const y = this.size * i - this.offset.y;
-            this.line(-height / 2, y, height / 2, y);
+            this.line(-width / 2, y, width / 2, y);
         }
 
-        for (let i = 0; i < this.props.expressions.length; i++) {
+        for (let i = 0; i < this.props.expressions.length; i += 1) {
             const eq = this.props.expressions[i];
             if (eq && eq.arguments.length <= 1) {
                 this.stroke('#00f');
@@ -95,7 +95,7 @@ export default class Graph extends Canvas<Props> {
                 prevY *= this.size;
                 prevY -= this.offset.y;
 
-                for (let x = 1 - width / 2; x < width / 2; x++) {
+                for (let x = 1 - width / 2; x < width / 2; x += 1) {
                     let newY = solve((x + this.offset.x) / this.size, eq);
                     newY *= this.size;
                     newY -= this.offset.y;
@@ -107,7 +107,7 @@ export default class Graph extends Canvas<Props> {
     }
 
     scroll() {
-        let cvs_parent: any = document.getElementById(this.props.id + '-parent');
+        const cvs_parent = document.getElementById(this.props.id + '-parent') as HTMLDivElement;
         let avg = (cvs_parent.scrollHeight - cvs_parent.clientHeight) / 2;
         avg = Math.floor(avg);
         const diff = 1.1;
@@ -142,6 +142,9 @@ export default class Graph extends Canvas<Props> {
         super(props);
         this.componentDidMount = () => {
             window.addEventListener('resize', this.componentDidUpdate.bind(this));
+            document
+                .querySelector('#calc-graph .resizer')
+                ?.addEventListener('mousemove', this.componentDidUpdate.bind(this));
             this.componentDidUpdate();
         };
         this.size = 15;
@@ -157,6 +160,7 @@ export default class Graph extends Canvas<Props> {
         this.down = this.down.bind(this);
         this.up = this.up.bind(this);
         this.drag = this.drag.bind(this);
+        this.scroll = this.scroll.bind(this);
 
         // window.addEventListener('resize', this.componentDidUpdate);
         // window.addEventListener('resize', () => console.log('HEYY'));

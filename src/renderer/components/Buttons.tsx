@@ -1,4 +1,4 @@
-import React, { Component } from 'React';
+import React, { Component } from 'react';
 require('../styles/Buttons.sass');
 import PlusMinus from './res/PlusMinus';
 
@@ -7,48 +7,37 @@ export default class Buttons extends Component {
         return (
             <div id="buttons">
                 <table>
-                    <tbody>{createNumbers()}</tbody>
+                    <tbody>
+                        <tr>
+                            <td id="1">1</td>
+                            <td id="2">2</td>
+                            <td id="3">3</td>
+                        </tr>
+                        <tr>
+                            <td id="4">4</td>
+                            <td id="5">5</td>
+                            <td id="6">6</td>
+                        </tr>
+                        <tr>
+                            <td id="7">7</td>
+                            <td id="8">8</td>
+                            <td id="9">9</td>
+                        </tr>
+                        <tr>
+                            <td>{PlusMinus}</td>
+                            <td id="0">0</td>
+                            <td>
+                                <span className="vertical-center">.</span>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         );
     }
 }
 
-function createNumbers() {
-    const oneToThree = (
-        <tr>
-            <td id="1">1</td>
-            <td id="2">2</td>
-            <td id="3">3</td>
-        </tr>
-    );
-    const fourToSix = (
-        <tr>
-            <td id="4">4</td>
-            <td id="5">5</td>
-            <td id="6">6</td>
-        </tr>
-    );
-    const sevenToNine = (
-        <tr>
-            <td id="7">7</td>
-            <td id="8">8</td>
-            <td id="9">9</td>
-        </tr>
-    );
-    const last = (
-        <tr>
-            <td>{PlusMinus}</td>
-            <td id="0">0</td>
-            <td>
-                <span className="vertical-center">.</span>
-            </td>
-        </tr>
-    );
-    return [oneToThree, fourToSix, sevenToNine, last];
-}
-
-var isActive = false;
+let isActive = false;
 
 export function addListeners() {
     document.addEventListener('keydown', e => {
@@ -71,7 +60,7 @@ function addClass(id: string, add: string) {
 }
 
 function removeClass(id: string, remove: string) {
-    let c = document.getElementById(id)!.className;
+    const c = document.getElementById(id)!.className;
     let classes = c.split(' ');
     classes = classes.filter(e => remove !== e);
     document.getElementById(id)!.className = classes.join(' ');

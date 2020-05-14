@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'React';
+import React from 'react';
 
 export default class Resizer extends React.Component<{ id: string }> {
     down() {
@@ -8,33 +8,34 @@ export default class Resizer extends React.Component<{ id: string }> {
         this.parent()?.removeEventListener('mousemove', this.mousemove);
     }
     mousemove(e: MouseEvent) {
-        let parent = this.parent();
+        const parent = this.parent();
         if (!parent) return;
-        let percent = (100 * (e.x - parent.getBoundingClientRect().left)) / parent.clientWidth;
-        let el = document.getElementById(this.props.id);
+        const percent = (100 * (e.x - parent.getBoundingClientRect().left)) / parent.clientWidth;
+        const el = document.getElementById(this.props.id);
         if (!el) return;
         el.style.width = percent + '%';
         el.style.minWidth = percent + '%';
-        let child: any = document.getElementById(this.props.id + '-2');
+        const child = document.getElementById(this.props.id + '-2')!;
         child.style.width = 100 - percent + '%';
     }
     parent(): HTMLElement | null {
-        let el = document.getElementById(this.props.id);
+        const el = document.getElementById(this.props.id);
         if (!el) return null;
         return el.parentElement;
     }
     render() {
-        let children: any = this.props.children as any;
+        const children: any = this.props.children as any;
         return [
-            <div className="resize" id={this.props.id} style={{ width: '50%' }}>
+            <div
+                className="resize"
+                key={this.props.id + '-0'}
+                id={this.props.id}
+                style={{ width: '50%' }}
+            >
                 {children.slice(0, children.length - 1)}
-                <div
-                    className="resizer"
-                    onMouseDown={this.down.bind(this)}
-                    onMouseUp={this.up.bind(this)}
-                ></div>
+                <div className="resizer" onMouseDown={this.down} onMouseUp={this.up} />
             </div>,
-            <div id={this.props.id + '-2'} style={{ width: '50%' }}>
+            <div key={this.props.id + '-1'} id={this.props.id + '-2'} style={{ width: '50%' }}>
                 {children[children.length - 1]}
             </div>
         ];
@@ -42,5 +43,7 @@ export default class Resizer extends React.Component<{ id: string }> {
     constructor(props: any) {
         super(props);
         this.mousemove = this.mousemove.bind(this);
+        this.up = this.up.bind(this);
+        this.down = this.down.bind(this);
     }
 }

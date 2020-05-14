@@ -1,4 +1,4 @@
-import { Component } from 'React';
+import { Component } from 'react';
 
 export default class Canvas<P = {}, S = {}> extends Component<P, S> {
     ctx: any;

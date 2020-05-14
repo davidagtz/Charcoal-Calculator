@@ -28,23 +28,25 @@ export default class TitleBar extends Component {
 
     buildMenu(items: MenuItem[]): JSX.Element[] {
         const children = [];
-        /* tslint:disable */
-        for (let i = 0; i < items.length; i++) {
+        for (let i = 0; i < items.length; i += 1) {
             const e: any = items[i];
+            const click = function() {
+                e.click();
+            };
+            console.log(e.click);
             children.push(
-                <div key={e.label} className="title-button" onClick={() => e.click()}>
+                <div key={e.label} className="title-button" onClick={click}>
                     <span>{e.label}</span>
                     {this.buildSubmenu(e.submenu.items)}
                 </div>
             );
         }
-        /* tslint:enable */
         return children;
     }
 
     buildSubmenu(items: MenuItem[]): JSX.Element {
         const children = [];
-        for (let i = 0; i < items.length; i++) {
+        for (let i = 0; i < items.length; i += 1) {
             const item: any = items[i];
             let className = undefined;
             if (item.type === 'separator') className = 'separator';

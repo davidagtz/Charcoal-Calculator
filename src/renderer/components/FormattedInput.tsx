@@ -21,7 +21,7 @@ export default class FormattedInput extends Component<ExpressionProps> {
         });
         this.inputChange = this.inputChange.bind(this);
         this.addRow = this.addRow.bind(this);
-        this.state.rows++;
+        this.state.rows += 1;
     }
 
     inputChange(rowNumber: number) {
@@ -30,30 +30,34 @@ export default class FormattedInput extends Component<ExpressionProps> {
                 'finput-' + rowNumber
             ) as HTMLInputElement;
 
-            let parser = new Parser(i.value);
+            const parser = new Parser(i.value);
 
             try {
-                let tree = parser.parse();
+                const tree = parser.parse();
                 let tex = '';
                 let result = 0;
                 if (isFunction(tree)) {
-                    if (this.props.expressions.length === this.state.rows)
+                    if (this.props.expressions.length === this.state.rows) {
                         this.props.changeExpression(rowNumber, toFunction(tree)!);
-                    else this.props.addExpression(toFunction(tree)!);
-                    if (tree) tex = toTex(tree);
+                    } else {
+                        this.props.addExpression(toFunction(tree)!);
+                    }
+                    if (tree) {
+                        tex = toTex(tree);
+                    }
                 } else if (tree) {
                     result = calculate(tree);
                     tex = toTex(tree);
                 }
-                let errors = this.state.error;
+                const errors = this.state.error;
                 errors[rowNumber] = false;
-                let results = this.state.value;
+                const results = this.state.value;
                 results[rowNumber] = result;
                 this.setState({ error: errors, value: results, html: tex });
             } catch (e) {
-                let errors = this.state.error;
+                const errors = this.state.error;
                 errors[rowNumber] = true;
-                let results = this.state.value;
+                const results = this.state.value;
                 results[rowNumber] = 0;
                 this.setState({ error: errors, result: results, html: '' });
                 console.error(e);
@@ -62,8 +66,9 @@ export default class FormattedInput extends Component<ExpressionProps> {
     }
 
     componentDidUpdate() {
-        if (this.state.MathJax)
+        if (this.state.MathJax) {
             MathJax.Hub.Queue(['Typeset', MathJax.Hub, document.getElementById('to-format')]);
+        }
 
         if (this.changeFocus !== -1) {
             document.getElementById('finput-' + this.changeFocus)?.focus();
@@ -77,8 +82,8 @@ export default class FormattedInput extends Component<ExpressionProps> {
         }
     }
     render() {
-        let rows = [] as React.ReactNode[];
-        for (let i = 0; i < this.state.rows; i++) {
+        const rows = [] as React.ReactNode[];
+        for (let i = 0; i < this.state.rows; i += 1) {
             rows.push(this.makeInput(i));
         }
         return (
