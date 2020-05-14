@@ -28,7 +28,7 @@ const createWindow = async () => {
             webSecurity: false
         }
     });
-    const m = Menu.buildFromTemplate(menu(win));
+    const m = Menu.buildFromTemplate(menu(win) as any);
     Menu.setApplicationMenu(m);
 
     if (process.env.NODE_ENV !== 'production') {

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
-import FormattedInput from '../components/FormattedInput';
+import FormattedInput from '../components/MainPage/FormattedInput';
 import { RootState } from '../reducers';
 import { InputAction, chgExp, addExp } from '../actions/formattedInputActions';
 import { VarFunction } from '../components/Tools/brains/Types';

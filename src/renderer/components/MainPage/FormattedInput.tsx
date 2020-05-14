@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import Parser, { isFunction, toFunction } from './Tools/brains/Parser';
-import calculate, { toTex } from './Tools/brains/Calculator';
-import { loadMathJax } from '../mathjax-electron/index';
-import { ExpressionProps } from './Tools/brains/Types';
-require('../styles/FormattedInput.sass');
+import Parser, { isFunction, toFunction } from '../Tools/brains/Parser';
+import calculate, { toTex } from '../Tools/brains/Calculator';
+import { loadMathJax } from '../../mathjax-electron/index';
+import { ExpressionProps } from '../Tools/brains/Types';
+require('../../styles/FormattedInput.sass');
 
 export default class FormattedInput extends Component<ExpressionProps> {
     state = {

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
-import Graph from '../components/Graph';
+import Graph from '../components/MainPage/Graph';
 import { RootState } from '../reducers';
 import { InputAction, chgExp, addExp } from '../actions/formattedInputActions';
 import { VarFunction } from '../components/Tools/brains/Types';

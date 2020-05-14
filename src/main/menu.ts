@@ -1,6 +1,6 @@
-import { BrowserWindow } from 'electron';
+import { BrowserWindow, WebContents } from 'electron';
 
-export default (window: BrowserWindow) => [
+const menu = (window: BrowserWindow) => [
     {
         label: 'File',
         submenu: [
@@ -9,7 +9,16 @@ export default (window: BrowserWindow) => [
                 click: () => {
                     window.webContents.openDevTools();
                 }
+            },
+            {
+                label: 'Settings',
+                click: () => {
+                    window.webContents.executeJavaScript(
+                        'document.dispatchEvent(new Event("openSettings"))'
+                    );
+                }
             }
         ]
     }
 ];
+export default menu;

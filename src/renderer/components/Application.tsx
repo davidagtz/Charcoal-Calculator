@@ -2,11 +2,8 @@ import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 
 import TitleBar from './TitleBar';
-// import ButtonsContainer from '../containers/ButtonsContainer';
-import FormattedInputContainer from '../containers/FormattedInputContainer';
-import GraphConatiner from '../containers/GraphContainer';
-import Resizer from './Tools/Resizer';
-import Buttons from './Buttons';
+import MainPage from './MainPage/MainPage';
+import SwitcherContainer from '../containers/SwitcherContainer';
 
 require('../styles/Application.sass');
 
@@ -15,13 +12,10 @@ const Application = () => (
     <div>
         <TitleBar />
         <div className="big-body">
-            <Resizer id="calc-graph">
-                <div id="sidebar">
-                    <FormattedInputContainer />
-                    <Buttons />
-                </div>
-                <GraphConatiner id="graph" />
-            </Resizer>
+            <SwitcherContainer>
+                <MainPage />
+                <div />
+            </SwitcherContainer>
         </div>
     </div>
 );

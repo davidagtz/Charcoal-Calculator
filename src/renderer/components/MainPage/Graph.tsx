@@ -1,8 +1,8 @@
 import React from 'react';
-import Canvas from './Tools/Canvas';
-import { ExpressionProps } from './Tools/brains/Types';
-import { solve } from './Tools/brains/Calculator';
-require('../styles/Graph.sass');
+import Canvas from '../Tools/Canvas';
+import { ExpressionProps } from '../Tools/brains/Types';
+import { solve } from '../Tools/brains/Calculator';
+require('../../styles/Graph.sass');
 
 interface Props extends ExpressionProps {
     id: string;

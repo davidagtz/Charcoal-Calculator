@@ -33,7 +33,6 @@ export default class TitleBar extends Component {
             const click = function() {
                 e.click();
             };
-            console.log(e.click);
             children.push(
                 <div key={e.label} className="title-button" onClick={click}>
                     <span>{e.label}</span>

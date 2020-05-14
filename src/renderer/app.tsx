@@ -5,7 +5,8 @@ import { AppContainer } from 'react-hot-loader';
 
 import Application from './components/Application';
 import store from './store';
-import { addListeners } from './components/Buttons';
+import { addListeners } from './components/MainPage/Buttons';
+import { openPage } from './actions/switcherActions';
 
 // Create main element
 const mainElement = document.createElement('div');

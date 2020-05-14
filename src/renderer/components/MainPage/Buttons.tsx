@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-require('../styles/Buttons.sass');
-import PlusMinus from './res/PlusMinus';
+require('../../styles/Buttons.sass');
+import PlusMinus from '../res/PlusMinus';
 
 export default class Buttons extends Component {
     render() {
