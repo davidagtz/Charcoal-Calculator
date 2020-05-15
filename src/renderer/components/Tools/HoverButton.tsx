@@ -34,8 +34,9 @@ export default class HoverButton extends React.Component<{
     }
     render() {
         let style = this.props.style;
-        if (this.props.onactive && this.state.isActive) style = this.props.onactive;
-        else if (this.state.onHover) style = this.props.onhover;
+        if (this.props.onactive && this.state.isActive)
+            style = { ...style, ...this.props.onactive };
+        else if (this.state.onHover) style = { ...style, ...this.props.onhover };
         return (
             <div
                 // key={this.props.key}
