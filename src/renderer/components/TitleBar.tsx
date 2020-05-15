@@ -1,14 +1,25 @@
 import React, { Component } from 'react';
 import { remote, MenuItem } from 'electron';
+import { StyleSchema } from './Tools/brains/Types';
+import HoverButton from './Tools/HoverButton';
 require('../styles/TitleBar.sass');
 
-export default class TitleBar extends Component {
+export default class TitleBar extends Component<{
+    style: StyleSchema;
+}> {
     render() {
         const menu = remote.Menu.getApplicationMenu();
+        const style = this.props.style.TitleBar;
         let children: JSX.Element[] = [];
         if (menu) children = this.buildMenu(menu.items);
         return (
-            <div id="titlebar">
+            <div
+                id="titlebar"
+                style={{
+                    backgroundColor: style.background,
+                    color: style.font
+                }}
+            >
                 {children}
                 <span>{document.title}</span>
                 <div id="win-buttons">
@@ -33,11 +44,20 @@ export default class TitleBar extends Component {
             const click = function() {
                 e.click();
             };
+            // <div key={e.label} className="title-button" onClick={click}>
+            //     <span>{e.label}</span>
+            //     {this.buildSubmenu(e.submenu.items)}
+            // </div>
             children.push(
-                <div key={e.label} className="title-button" onClick={click}>
+                <HoverButton
+                    key={e.label}
+                    onhover={{ backgroundColor: this.props.style.TitleBar.buttons.hover }}
+                    className="title-button"
+                    onClick={click}
+                >
                     <span>{e.label}</span>
                     {this.buildSubmenu(e.submenu.items)}
-                </div>
+                </HoverButton>
             );
         }
         return children;
@@ -50,9 +70,16 @@ export default class TitleBar extends Component {
             let className = undefined;
             if (item.type === 'separator') className = 'separator';
             children.push(
-                <div key={i} className={className} onClick={() => item.click()}>
+                <HoverButton
+                    style={{ backgroundColor: this.props.style.TitleBar.buttons.hover }}
+                    onhover={{ backgroundColor: this.props.style.TitleBar.buttons.submenuhover }}
+                    onactive={{ backgroundColor: this.props.style.TitleBar.buttons.active }}
+                    key={i}
+                    className={className}
+                    onClick={() => item.click()}
+                >
                     {item.label}
-                </div>
+                </HoverButton>
             );
         }
         return <div className="list">{children}</div>;

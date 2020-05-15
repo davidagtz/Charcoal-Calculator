@@ -14,7 +14,7 @@ const menu = (window: BrowserWindow) => [
                 label: 'Settings',
                 click: () => {
                     window.webContents.executeJavaScript(
-                        'document.dispatchEvent(new Event("openSettings"))'
+                        '(()=> {let e = new Event("openPage"); e.page = 1; document.dispatchEvent(e)})()'
                     );
                 }
             }

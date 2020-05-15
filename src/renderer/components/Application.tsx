@@ -1,20 +1,21 @@
 import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
 
-import TitleBar from './TitleBar';
 import MainPage from './MainPage/MainPage';
 import SwitcherContainer from '../containers/SwitcherContainer';
+import SettingsContainter from '../containers/SettingsContainter';
+import TitleBarContainer from '../containers/TitleBarContainer';
 
 require('../styles/Application.sass');
 
 document.title = 'Charcoal';
 const Application = () => (
     <div>
-        <TitleBar />
+        <TitleBarContainer />
         <div className="big-body">
             <SwitcherContainer>
                 <MainPage />
-                <div />
+                <SettingsContainter />
             </SwitcherContainer>
         </div>
     </div>

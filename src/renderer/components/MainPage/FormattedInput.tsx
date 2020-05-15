@@ -2,10 +2,14 @@ import React, { Component } from 'react';
 import Parser, { isFunction, toFunction } from '../Tools/brains/Parser';
 import calculate, { toTex } from '../Tools/brains/Calculator';
 import { loadMathJax } from '../../mathjax-electron/index';
-import { ExpressionProps } from '../Tools/brains/Types';
+import { ExpressionProps, StyleSchema } from '../Tools/brains/Types';
 require('../../styles/FormattedInput.sass');
 
-export default class FormattedInput extends Component<ExpressionProps> {
+interface Props extends ExpressionProps {
+    style: StyleSchema;
+}
+
+export default class FormattedInput extends Component<Props> {
     state = {
         html: '$$E = c^{\\frac {3}{5}}$$',
         error: [] as boolean[],
@@ -90,7 +94,12 @@ export default class FormattedInput extends Component<ExpressionProps> {
             rows.push(this.makeInput(i));
         }
         return (
-            <div className="formatted-input">
+            <div
+                className="formatted-input"
+                style={{
+                    backgroundColor: this.props.style.Calculator.background
+                }}
+            >
                 {rows}
                 <p id="to-format">{this.state.html}</p>
             </div>

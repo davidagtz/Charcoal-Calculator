@@ -1,0 +1,31 @@
+{
+    "Graph": {
+        "background": "#000",
+        "axis": "#994d00",
+        "font": "#FFF",
+        "equation_colors": ["#02a2ff", "#ff0252", "#52ff02"]
+    },
+    "Calculator": {
+        "input": {
+            "font": "#000",
+            "answerFont": "#FFF",
+            "answerBackground": "#FFFFF",
+            "background": "#FFF"
+        },
+        "background": "#f0f0f0",
+        "font": "#333",
+        "buttons": {
+            "color": "#222222",
+            "font": "#FFF"
+        }
+    },
+    "TitleBar": {
+        "font": "#FFF",
+        "background": "#999",
+        "buttons": {
+            "hover": "#777",
+            "active": "#555",
+            "submenuhover": "#666"
+        }
+    }
+}

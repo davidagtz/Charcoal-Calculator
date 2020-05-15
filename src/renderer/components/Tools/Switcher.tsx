@@ -13,8 +13,8 @@ export default class Switcher extends Component<{
     constructor(props: any) {
         super(props);
 
-        document.addEventListener('openSettings', () => {
-            this.props.changePage(1);
+        document.addEventListener('openPage', (e: any) => {
+            this.props.changePage(e.page);
         });
     }
 }

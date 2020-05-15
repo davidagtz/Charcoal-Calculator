@@ -34,7 +34,8 @@
                     "type": "object",
                     "properties": {
                         "font": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "Sets the font for the entire application"
                         },
                         "answerFont": {
                             "type": "string"
@@ -43,12 +44,16 @@
                             "type": "string"
                         },
                         "background": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "Sets the main background of the entire application"
                         }
                     },
                     "required": ["font", "answerFont", "answerBackground", "background"]
                 },
                 "background": {
+                    "type": "string"
+                },
+                "font": {
                     "type": "string"
                 },
                 "buttons": {
@@ -83,9 +88,12 @@
                         },
                         "active": {
                             "type": "string"
+                        },
+                        "submenuhover": {
+                            "type": "string"
                         }
                     },
-                    "required": ["hover", "active"]
+                    "required": ["hover", "active", "submenuhover"]
                 }
             },
             "required": ["font", "background", "buttons"]
