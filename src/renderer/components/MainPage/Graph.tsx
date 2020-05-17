@@ -2,6 +2,7 @@ import React from 'react';
 import Canvas from '../Tools/Canvas';
 import { ExpressionProps, StyleSchema } from '../Tools/brains/Types';
 import { solve } from '../Tools/brains/Calculator';
+import Home from '../res/Home';
 require('../../styles/Graph.sass');
 
 interface Props extends ExpressionProps {
@@ -27,13 +28,18 @@ export default class Graph extends Canvas<Props> {
 
     render() {
         return (
-            <canvas
-                id={this.props.id}
-                onWheel={this.wheel}
-                onMouseDown={this.down}
-                onMouseUp={this.up}
-                onMouseMove={this.drag}
-            />
+            <div id={this.props.id + '-parent'}>
+                <canvas
+                    id={this.props.id}
+                    onWheel={this.wheel}
+                    onMouseDown={this.down}
+                    onMouseUp={this.up}
+                    onMouseMove={this.drag}
+                />
+                <div id={this.props.id + '-home'} onClick={this.reset}>
+                    <Home fill={this.props.style.Graph.font} />
+                </div>
+            </div>
         );
     }
 
@@ -61,7 +67,7 @@ export default class Graph extends Canvas<Props> {
 
         this.stroke(style.axis + '44');
 
-        this.fill('#fff');
+        this.fill(style.font);
         for (let i = -1; i * this.size >= -width / 2 + this.offset.x; i -= 1) {
             this.chooseStroke(i);
             const x = this.size * i - this.offset.x;
@@ -192,5 +198,21 @@ export default class Graph extends Canvas<Props> {
         this.up = this.up.bind(this);
         this.drag = this.drag.bind(this);
         this.wheel = this.wheel.bind(this);
+        this.reset = this.reset.bind(this);
+    }
+
+    reset() {
+        this.size = (50 + 20) / 2;
+        this.scaleFactor = 1;
+        this.offset = {
+            x: 0,
+            y: 0
+        };
+        this.mouse = {
+            active: false,
+            x: 0,
+            y: 0
+        };
+        this.componentDidUpdate();
     }
 }

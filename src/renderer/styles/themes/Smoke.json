@@ -2,7 +2,7 @@
     "Graph": {
         "background": "#FFF",
         "axis": "#333",
-        "font": "#fff",
+        "font": "#000",
         "equationColors": ["#ff8000", "#00f", "#0f0"]
     },
     "Calculator": {
