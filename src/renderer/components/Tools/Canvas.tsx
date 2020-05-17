@@ -10,6 +10,7 @@ export default class Canvas<P = {}, S = {}> extends Component<P, S> {
         x: number;
         y: number;
     };
+    _font = '30px Arial';
 
     line(x1: number, y1: number, x2: number, y2: number): void {
         this.ctx.beginPath();
@@ -57,6 +58,11 @@ export default class Canvas<P = {}, S = {}> extends Component<P, S> {
 
     scaleY(y: number) {
         this._scale.y = y;
+    }
+
+    text(str: string, x: number, y: number, mode: 'CENTER' | 'CORNER' = 'CORNER') {
+        this.ctx.font = this._font;
+        this.ctx.fillText(str, this._tX(x), this._tY(y));
     }
 
     _tX(x: number) {

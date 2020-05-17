@@ -21,6 +21,9 @@ export default class Graph extends Canvas<Props> {
         x: number;
         y: number;
     };
+    onEvery = 5;
+    bigAxis = 3;
+    minorAxis = 1;
 
     render() {
         return (
@@ -58,34 +61,38 @@ export default class Graph extends Canvas<Props> {
 
         this.stroke(style.axis + '44');
 
-        const bigAxis = 3;
-        const minorAxis = 1;
+        this.fill('#fff');
         for (let i = -1; i * this.size >= -width / 2 + this.offset.x; i -= 1) {
-            if (-i % 5 === 0) this.strokeWeight(bigAxis);
-            else this.strokeWeight(minorAxis);
+            this.chooseStroke(i);
             const x = this.size * i - this.offset.x;
             this.line(x, -height / 2, x, height / 2);
-            // if(-i % 5) {
-            //     this.text(i, )
-            // }
+            if (i % this.onEvery === 0) {
+                this.text(`${this.scaleFactor * i}`, x, -this.offset.y);
+            }
         }
         for (let i = 1; i * this.size <= width / 2 + this.offset.x; i += 1) {
-            if (i % 5 === 0) this.strokeWeight(bigAxis);
-            else this.strokeWeight(minorAxis);
+            this.chooseStroke(i);
             const x = this.size * i - this.offset.x;
             this.line(x, -height / 2, x, height / 2);
+            if (i % this.onEvery === 0) {
+                this.text(`${this.scaleFactor * i}`, x, -this.offset.y);
+            }
         }
         for (let i = -1; i * this.size >= -height / 2 + this.offset.y; i -= 1) {
-            if (-i % 5 === 0) this.strokeWeight(bigAxis);
-            else this.strokeWeight(minorAxis);
+            this.chooseStroke(i);
             const y = this.size * i - this.offset.y;
             this.line(-width / 2, y, width / 2, y);
+            if (i % this.onEvery === 0) {
+                this.text(`${this.scaleFactor * i}`, -this.offset.x, y);
+            }
         }
         for (let i = 1; i * this.size <= height / 2 + this.offset.y; i += 1) {
-            if (i % 5 === 0) this.strokeWeight(bigAxis);
-            else this.strokeWeight(minorAxis);
+            this.chooseStroke(i);
             const y = this.size * i - this.offset.y;
             this.line(-width / 2, y, width / 2, y);
+            if (i % this.onEvery === 0) {
+                this.text(`${this.scaleFactor * i}`, -this.offset.x, y);
+            }
         }
 
         for (let i = 0; i < this.props.expressions.length; i += 1) {
@@ -111,6 +118,11 @@ export default class Graph extends Canvas<Props> {
         }
     }
 
+    chooseStroke(count: number) {
+        if (count % this.onEvery === 0) this.strokeWeight(this.bigAxis);
+        else this.strokeWeight(this.minorAxis);
+    }
+
     toVX(pixel: number) {
         return (this.scaleFactor * (pixel + this.offset.x)) / this.size;
     }
@@ -130,7 +142,7 @@ export default class Graph extends Canvas<Props> {
         if (this.size < 20) {
             this.size *= 5;
             this.scaleFactor *= 5;
-        } else if (this.size > 75) {
+        } else if (this.size > 50) {
             this.size /= 5;
             this.scaleFactor /= 5;
         }
@@ -165,7 +177,7 @@ export default class Graph extends Canvas<Props> {
                 ?.addEventListener('mousemove', this.componentDidUpdate.bind(this));
             this.componentDidUpdate();
         };
-        this.size = (75 + 20) / 2;
+        this.size = (50 + 20) / 2;
         this.offset = {
             x: 0,
             y: 0
