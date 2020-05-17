@@ -44,7 +44,7 @@ export interface StyleSchema {
         background: string;
         axis: string;
         font: string;
-        equation: string[];
+        equationColors: string[];
     };
     Calculator: {
         input: {
@@ -56,17 +56,21 @@ export interface StyleSchema {
         background: string;
         font: string;
         buttons: {
-            color: string;
-            font: string;
+            hover: string;
+            active: string;
         };
     };
     TitleBar: {
         font: string;
         background: string;
         buttons: {
-            hover: string;
-            active: string;
             submenuhover: string;
         };
+    };
+    defaultButtons: {
+        font: string;
+        color: string;
+        hover: string;
+        active: string;
     };
 }

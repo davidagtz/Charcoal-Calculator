@@ -1,11 +1,12 @@
 import React from 'react';
 import Canvas from '../Tools/Canvas';
-import { ExpressionProps } from '../Tools/brains/Types';
+import { ExpressionProps, StyleSchema } from '../Tools/brains/Types';
 import { solve } from '../Tools/brains/Calculator';
 require('../../styles/Graph.sass');
 
 interface Props extends ExpressionProps {
     id: string;
+    style: StyleSchema;
 }
 
 export default class Graph extends Canvas<Props> {
@@ -19,7 +20,6 @@ export default class Graph extends Canvas<Props> {
         x: number;
         y: number;
     };
-    colors: string[];
 
     render() {
         return (
@@ -34,6 +34,7 @@ export default class Graph extends Canvas<Props> {
     }
 
     componentDidUpdate() {
+        const style = this.props.style.Graph;
         const cvs = document.getElementById(this.props.id) as HTMLCanvasElement;
         cvs.width = cvs.clientWidth;
         cvs.height = cvs.clientHeight;
@@ -43,39 +44,45 @@ export default class Graph extends Canvas<Props> {
         this.width = width;
         this.height = height;
 
+        this.fill(style.background);
         this.background();
 
         this.translate(width / 2, height / 2);
         this.scaleY(-1);
 
-        this.strokeWeight(4);
-        this.stroke('#994d00');
+        this.strokeWeight(6);
+        this.stroke(style.axis);
         this.line(-this.offset.x, -height / 2, -this.offset.x, height / 2);
         this.line(-width / 2, -this.offset.y, width / 2, -this.offset.y);
 
-        this.stroke('#994d0044');
+        this.stroke(style.axis + '44');
 
+        const bigAxis = 3;
+        const minorAxis = 1;
         for (let i = -1; i * this.size >= -width / 2 + this.offset.x; i -= 1) {
-            if (-i % 5 === 0) this.strokeWeight(3);
-            else this.strokeWeight(1);
+            if (-i % 5 === 0) this.strokeWeight(bigAxis);
+            else this.strokeWeight(minorAxis);
             const x = this.size * i - this.offset.x;
             this.line(x, -height / 2, x, height / 2);
+            // if(-i % 5) {
+            //     this.text(i, )
+            // }
         }
         for (let i = 1; i * this.size <= width / 2 + this.offset.x; i += 1) {
-            if (i % 5 === 0) this.strokeWeight(3);
-            else this.strokeWeight(1);
+            if (i % 5 === 0) this.strokeWeight(bigAxis);
+            else this.strokeWeight(minorAxis);
             const x = this.size * i - this.offset.x;
             this.line(x, -height / 2, x, height / 2);
         }
         for (let i = -1; i * this.size >= -height / 2 + this.offset.y; i -= 1) {
-            if (-i % 5 === 0) this.strokeWeight(3);
-            else this.strokeWeight(1);
+            if (-i % 5 === 0) this.strokeWeight(bigAxis);
+            else this.strokeWeight(minorAxis);
             const y = this.size * i - this.offset.y;
             this.line(-width / 2, y, width / 2, y);
         }
         for (let i = 1; i * this.size <= height / 2 + this.offset.y; i += 1) {
-            if (i % 5 === 0) this.strokeWeight(3);
-            else this.strokeWeight(1);
+            if (i % 5 === 0) this.strokeWeight(bigAxis);
+            else this.strokeWeight(minorAxis);
             const y = this.size * i - this.offset.y;
             this.line(-width / 2, y, width / 2, y);
         }
@@ -83,7 +90,11 @@ export default class Graph extends Canvas<Props> {
         for (let i = 0; i < this.props.expressions.length; i += 1) {
             const eq = this.props.expressions[i];
             if (eq && eq.arguments.length <= 1) {
-                this.stroke(this.colors[i % this.colors.length]);
+                this.stroke(
+                    this.props.style.Graph.equationColors[
+                        i % this.props.style.Graph.equationColors.length
+                    ]
+                );
                 this.strokeWeight(4);
 
                 let prevY = solve((-width / 2 + this.offset.x) / this.size, eq);
@@ -152,7 +163,5 @@ export default class Graph extends Canvas<Props> {
         this.up = this.up.bind(this);
         this.drag = this.drag.bind(this);
         this.wheel = this.wheel.bind(this);
-
-        this.colors = ['#02a2ff', '#ff0252', '#52ff02'];
     }
 }

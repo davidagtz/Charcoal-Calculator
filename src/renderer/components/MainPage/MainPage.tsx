@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import FormattedInputContainer from '../../containers/FormattedInputContainer';
 import GraphConatiner from '../../containers/GraphContainer';
 import Resizer from '../Tools/Resizer';
-import Buttons from './Buttons';
+import ButtonsContainer from '../../containers/ButtonsContainer';
 
 export default class extends Component {
     render() {
@@ -11,7 +11,7 @@ export default class extends Component {
             <Resizer id="calc-graph">
                 <div id="sidebar">
                     <FormattedInputContainer />
-                    <Buttons />
+                    <ButtonsContainer />
                 </div>
                 <GraphConatiner id="graph" />
             </Resizer>

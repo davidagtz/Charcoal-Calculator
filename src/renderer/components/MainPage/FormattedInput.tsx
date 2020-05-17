@@ -97,7 +97,8 @@ export default class FormattedInput extends Component<Props> {
             <div
                 className="formatted-input"
                 style={{
-                    backgroundColor: this.props.style.Calculator.background
+                    backgroundColor: this.props.style.Calculator.background,
+                    color: this.props.style.Calculator.font
                 }}
             >
                 {rows}
@@ -114,6 +115,10 @@ export default class FormattedInput extends Component<Props> {
                     className={this.state.error[key] ? ' error' : ''}
                     onChange={this.inputChange(key)}
                     onKeyPress={this.addRow}
+                    style={{
+                        backgroundColor: this.props.style.Calculator.input.background,
+                        color: this.props.style.Calculator.input.font
+                    }}
                 />
                 <div className={'ans' + (this.state.error[key] ? ' error' : '')}>
                     {this.state.error[key] || !this.state.value[key]

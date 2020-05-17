@@ -51,7 +51,7 @@ export default class TitleBar extends Component<{
             children.push(
                 <HoverButton
                     key={e.label}
-                    onhover={{ backgroundColor: this.props.style.TitleBar.buttons.hover }}
+                    onhover={{ backgroundColor: this.props.style.defaultButtons.hover }}
                     className="title-button"
                     onClick={click}
                 >
@@ -71,9 +71,9 @@ export default class TitleBar extends Component<{
             if (item.type === 'separator') className = 'separator';
             children.push(
                 <HoverButton
-                    style={{ backgroundColor: this.props.style.TitleBar.buttons.hover }}
+                    style={{ backgroundColor: this.props.style.defaultButtons.hover }}
                     onhover={{ backgroundColor: this.props.style.TitleBar.buttons.submenuhover }}
-                    onactive={{ backgroundColor: this.props.style.TitleBar.buttons.active }}
+                    onactive={{ backgroundColor: this.props.style.defaultButtons.active }}
                     key={i}
                     className={className}
                     onClick={() => item.click()}

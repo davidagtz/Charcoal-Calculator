@@ -1,9 +1,9 @@
 {
     "Graph": {
-        "background": "#000",
-        "axis": "#994d00",
-        "font": "#FFF",
-        "equation_colors": ["#02a2ff", "#ff0252", "#52ff02"]
+        "background": "#FFF",
+        "axis": "#333",
+        "font": "#fff",
+        "equationColors": ["#ff8000", "#00f", "#0f0"]
     },
     "Calculator": {
         "input": {
@@ -15,17 +15,21 @@
         "background": "#f0f0f0",
         "font": "#333",
         "buttons": {
-            "color": "#222222",
-            "font": "#FFF"
+            "active": "#999",
+            "hover": "#888"
         }
     },
     "TitleBar": {
         "font": "#FFF",
-        "background": "#999",
+        "background": "#777",
         "buttons": {
-            "hover": "#777",
-            "active": "#555",
-            "submenuhover": "#666"
+            "submenuhover": "#444"
         }
+    },
+    "defaultButtons": {
+        "active": "#333",
+        "hover": "#555",
+        "color": "#777",
+        "font": "#FFF"
     }
 }

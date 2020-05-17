@@ -24,14 +24,14 @@ export default class ThemePicker extends React.Component<{
         const { style } = this.props;
         const buttonProps = {
             style: {
-                backgroundColor: style.TitleBar.background,
-                color: style.TitleBar.font
+                backgroundColor: style.defaultButtons.color,
+                color: style.defaultButtons.font
             },
             onhover: {
-                backgroundColor: style.TitleBar.buttons.active
+                backgroundColor: style.defaultButtons.active
             },
             onactive: {
-                backgroundColor: style.TitleBar.buttons.hover
+                backgroundColor: style.defaultButtons.hover
             }
         };
         for (const file of folder) {

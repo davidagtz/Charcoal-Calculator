@@ -25,7 +25,7 @@
                     "minItems": 1
                 }
             },
-            "required": ["background", "axis", "font", "equation_colors"]
+            "required": ["background", "axis", "font", "equationColors"]
         },
         "Calculator": {
             "type": "object",
@@ -55,18 +55,6 @@
                 },
                 "font": {
                     "type": "string"
-                },
-                "buttons": {
-                    "type": "object",
-                    "properties": {
-                        "color": {
-                            "type": "string"
-                        },
-                        "font": {
-                            "type": "string"
-                        }
-                    },
-                    "required": ["color", "font"]
                 }
             },
             "required": ["input", "background", "buttons"]
@@ -83,21 +71,33 @@
                 "buttons": {
                     "type": "object",
                     "properties": {
-                        "hover": {
-                            "type": "string"
-                        },
-                        "active": {
-                            "type": "string"
-                        },
                         "submenuhover": {
                             "type": "string"
                         }
                     },
-                    "required": ["hover", "active", "submenuhover"]
+                    "required": ["submenuhover"]
                 }
             },
             "required": ["font", "background", "buttons"]
+        },
+        "defaultButtons": {
+            "type": "object",
+            "properties": {
+                "active": {
+                    "type": "string"
+                },
+                "hover": {
+                    "type": "string"
+                },
+                "color": {
+                    "type": "string"
+                },
+                "font": {
+                    "type": "string"
+                }
+            },
+            "required": ["active", "hover", "color", "font"]
         }
     },
-    "required": ["Graph", "Calculator", "TitleBar"]
+    "required": ["Graph", "Calculator", "TitleBar", "defaultButtons"]
 }

@@ -7,7 +7,8 @@ import { InputAction, chgExp, addExp } from '../actions/formattedInputActions';
 import { VarFunction } from '../components/Tools/brains/Types';
 
 const mapStateToProps = (state: RootState) => ({
-    expressions: state.input.expressions
+    expressions: state.input.expressions,
+    style: state.style.style
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<InputAction>) => ({
