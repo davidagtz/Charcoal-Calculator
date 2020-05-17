@@ -11,6 +11,7 @@ interface Props extends ExpressionProps {
 
 export default class Graph extends Canvas<Props> {
     size: number;
+    scaleFactor: number;
     offset: {
         x: number;
         y: number;
@@ -97,19 +98,25 @@ export default class Graph extends Canvas<Props> {
                 );
                 this.strokeWeight(4);
 
-                let prevY = solve((-width / 2 + this.offset.x) / this.size, eq);
-                prevY *= this.size;
-                prevY -= this.offset.y;
+                let prevY = solve(this.toVX(-width / 2), eq);
+                prevY = this.fromVY(prevY);
 
                 for (let x = 1 - width / 2; x < width / 2; x += 1) {
-                    let newY = solve((x + this.offset.x) / this.size, eq);
-                    newY *= this.size;
-                    newY -= this.offset.y;
+                    let newY = solve(this.toVX(x), eq);
+                    newY = this.fromVY(newY);
                     this.line(x - 1, prevY, x, newY);
                     prevY = newY;
                 }
             }
         }
+    }
+
+    toVX(pixel: number) {
+        return (this.scaleFactor * (pixel + this.offset.x)) / this.size;
+    }
+
+    fromVY(vy: number) {
+        return (vy * this.size) / this.scaleFactor - this.offset.y;
     }
 
     wheel(e: React.WheelEvent<HTMLCanvasElement>) {
@@ -119,6 +126,15 @@ export default class Graph extends Canvas<Props> {
         } else if (e.deltaY < 0) {
             this.size /= diff;
         }
+
+        if (this.size < 20) {
+            this.size *= 5;
+            this.scaleFactor *= 5;
+        } else if (this.size > 75) {
+            this.size /= 5;
+            this.scaleFactor /= 5;
+        }
+
         this.componentDidUpdate();
     }
 
@@ -149,7 +165,7 @@ export default class Graph extends Canvas<Props> {
                 ?.addEventListener('mousemove', this.componentDidUpdate.bind(this));
             this.componentDidUpdate();
         };
-        this.size = 15;
+        this.size = (75 + 20) / 2;
         this.offset = {
             x: 0,
             y: 0
@@ -159,6 +175,7 @@ export default class Graph extends Canvas<Props> {
             x: 0,
             y: 0
         };
+        this.scaleFactor = 1;
         this.down = this.down.bind(this);
         this.up = this.up.bind(this);
         this.drag = this.drag.bind(this);
