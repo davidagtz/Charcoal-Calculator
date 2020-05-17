@@ -3,6 +3,7 @@ import Parser, { isFunction, toFunction } from '../Tools/brains/Parser';
 import calculate, { toTex } from '../Tools/brains/Calculator';
 import { loadMathJax } from '../../mathjax-electron/index';
 import { ExpressionProps, StyleSchema } from '../Tools/brains/Types';
+import FakeInput from './FakeInput/FakeInput';
 require('../../styles/FormattedInput.sass');
 
 interface Props extends ExpressionProps {
@@ -72,14 +73,13 @@ export default class FormattedInput extends Component<Props> {
     }
 
     componentDidUpdate() {
-        if (this.state.MathJax) {
-            MathJax.Hub.Queue(['Typeset', MathJax.Hub, document.getElementById('to-format')]);
-        }
-
-        if (this.changeFocus !== -1) {
-            document.getElementById('finput-' + this.changeFocus)?.focus();
-            this.changeFocus = -1;
-        }
+        // if (this.state.MathJax) {
+        //     MathJax.Hub.Queue(['Typeset', MathJax.Hub, document.getElementById('to-format')]);
+        // }
+        // if (this.changeFocus !== -1) {
+        //     document.getElementById('finput-' + this.changeFocus)?.focus();
+        //     this.changeFocus = -1;
+        // }
     }
     addRow(e: React.KeyboardEvent<HTMLInputElement>) {
         if (e.charCode === 13) {
@@ -89,10 +89,10 @@ export default class FormattedInput extends Component<Props> {
         }
     }
     render() {
-        const rows = [] as React.ReactNode[];
-        for (let i = 0; i < this.state.rows; i += 1) {
-            rows.push(this.makeInput(i));
-        }
+        // const rows = [] as React.ReactNode[];
+        // for (let i = 0; i < this.state.rows; i += 1) {
+        //     rows.push(this.makeInput(i));
+        // }
         return (
             <div
                 className="formatted-input"
@@ -101,9 +101,25 @@ export default class FormattedInput extends Component<Props> {
                     color: this.props.style.Calculator.font
                 }}
             >
-                {rows}
+                <FakeInput
+                    id="fake-1"
+                    style={{
+                        backgroundColor: this.props.style.Calculator.input.background,
+                        color: this.props.style.Calculator.input.font
+                    }}
+                />
                 <p id="to-format">{this.state.html}</p>
             </div>
+            // <div
+            //     className="formatted-input"
+            //     style={{
+            //         backgroundColor: this.props.style.Calculator.background,
+            //         color: this.props.style.Calculator.font
+            //     }}
+            // >
+            //     {rows}
+            //     <p id="to-format">{this.state.html}</p>
+            // </div>
         );
     }
 
