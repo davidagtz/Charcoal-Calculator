@@ -60,7 +60,7 @@ export default class Graph extends Canvas<Props> {
         this.translate(width / 2, height / 2);
         this.scaleY(-1);
 
-        this.strokeWeight(6);
+        this.strokeWeight(5);
         this.stroke(style.axis);
         this.line(-this.offset.x, -height / 2, -this.offset.x, height / 2);
         this.line(-width / 2, -this.offset.y, width / 2, -this.offset.y);

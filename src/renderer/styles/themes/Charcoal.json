@@ -1,7 +1,7 @@
 {
     "Graph": {
         "background": "#000",
-        "axis": "#994d00",
+        "axis": "#FD971F",
         "font": "#FFF",
         "equationColors": ["#02a2ff", "#ff0252", "#52ff02"]
     },
