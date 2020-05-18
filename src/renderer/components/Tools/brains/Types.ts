@@ -2,7 +2,8 @@ export enum TYPE {
     NUMBER,
     OPERATION,
     VARIABLE,
-    PARENTHESES
+    PARENTHESES,
+    UNKNOWN
 }
 
 export interface Token {

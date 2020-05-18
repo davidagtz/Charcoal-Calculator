@@ -1,15 +1,8 @@
-import { OP, Token, TYPE, InvalidCharacterError } from './Types';
-import { makeOP, isalpha, makeToken, isnum, isop, getop, iswhitespace } from './JSChar';
+import { Token, TYPE, InvalidCharacterError } from './Types';
+import { isalpha, makeToken, isnum, isop, getop, iswhitespace } from './JSChar';
+import { OPERATORS } from './Tokenizer';
 
-export const OPERATORS: OP[] = [
-    makeOP('^', 19),
-    makeOP('*', 15),
-    makeOP('/', 15),
-    makeOP('+', 10),
-    makeOP('-', 10)
-];
-
-export default function tokenize(input: string): Token[] {
+export default function errorFreeTokenize(input: string): Token[] {
     let i = 0;
     const tokens: Token[] = [];
     while (i < input.length) {
@@ -34,7 +27,8 @@ export default function tokenize(input: string): Token[] {
         } else if (iswhitespace(input[i])) {
             i += 1;
         } else {
-            throw InvalidCharacterError(input[i]);
+            tokens.push(makeToken(input[i], TYPE.UNKNOWN));
+            i++;
         }
     }
     return tokens;
