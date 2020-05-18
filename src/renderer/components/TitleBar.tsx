@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { remote, MenuItem } from 'electron';
 import { StyleSchema } from './Tools/brains/Types';
 import HoverButton from './Tools/HoverButton';
-require('../styles/TitleBar.sass');
+require('./styles/TitleBar.sass');
 
 export default class TitleBar extends Component<{
     style: StyleSchema;

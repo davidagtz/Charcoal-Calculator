@@ -1,7 +1,7 @@
 import { Reducer } from 'redux';
 
 import { CHG_EXP, ADD_EXP, InputAction } from '../actions/formattedInputActions';
-import { VarFunction } from '../components/Tools/brains/Types';
+import { VarFunction } from '../../components/Tools/brains/Types';
 
 export interface InputState {
     readonly expressions: (VarFunction | null)[];

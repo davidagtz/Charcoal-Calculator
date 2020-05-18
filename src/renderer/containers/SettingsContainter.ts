@@ -2,8 +2,8 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 import Settings from '../components/Settings/Settings';
-import { RootState } from '../reducers';
-import { StyleAction, changeStyle } from '../actions/styleActions';
+import { RootState } from '../redux/reducers';
+import { StyleAction, changeStyle } from '../redux/actions/styleActions';
 import { StyleSchema } from '../components/Tools/brains/Types';
 
 const mapStateToProps = (state: RootState) => ({

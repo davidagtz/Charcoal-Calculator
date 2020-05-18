@@ -1,5 +1,5 @@
 import React, { Component, CSSProperties } from 'react';
-require('../../styles/Buttons.sass');
+require('./styles/Buttons.sass');
 import PlusMinus from '../res/PlusMinus';
 import { StyleSchema } from '../Tools/brains/Types';
 import HoverButton from '../Tools/HoverButton';

@@ -3,7 +3,7 @@ import Canvas from '../Tools/Canvas';
 import { ExpressionProps, StyleSchema } from '../Tools/brains/Types';
 import { solve } from '../Tools/brains/Calculator';
 import Home from '../res/Home';
-require('../../styles/Graph.sass');
+require('./styles/Graph.sass');
 
 interface Props extends ExpressionProps {
     id: string;

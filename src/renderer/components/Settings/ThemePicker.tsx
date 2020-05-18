@@ -4,7 +4,7 @@ import HoverButton from '../Tools/HoverButton';
 import Ajv from 'ajv';
 import { readFile, readdirSync } from 'fs';
 import * as path from 'path';
-const schema = require('../../styles/themes/themes.schema.json');
+const schema = require('../../themes/themes.schema.json');
 
 const ajv = new Ajv();
 const validate = ajv.compile(schema);
@@ -16,7 +16,7 @@ export default class ThemePicker extends React.Component<{
     state = {
         file: null as string | null,
         errors: null as null | string[],
-        defaultFolder: 'C:/Users/david/Documents/Fun/Calculator/src/renderer/styles/themes'
+        defaultFolder: 'C:/Users/david/Documents/Fun/Calculator/src/renderer/themes'
     };
     render() {
         const options = [];

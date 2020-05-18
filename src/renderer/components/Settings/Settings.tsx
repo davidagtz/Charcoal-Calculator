@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSchema } from '../Tools/brains/Types';
 import ThemePicker from './ThemePicker';
 import HoverButton from '../Tools/HoverButton';
-require('../../styles/Settings.sass');
+require('./Settings.sass');
 
 export default class Settings extends Component<{
     style: StyleSchema;

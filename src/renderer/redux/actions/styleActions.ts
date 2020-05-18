@@ -1,5 +1,5 @@
 import { Action, ActionCreator } from 'redux';
-import { StyleSchema } from '../components/Tools/brains/Types';
+import { StyleSchema } from '../../components/Tools/brains/Types';
 
 export const CHANGE_STYLE = 'CHANGE_STYLE';
 

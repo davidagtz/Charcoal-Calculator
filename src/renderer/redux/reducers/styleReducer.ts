@@ -1,8 +1,8 @@
 import { Reducer } from 'redux';
 
 import { CHANGE_STYLE, StyleAction } from '../actions/styleActions';
-import { StyleSchema } from '../components/Tools/brains/Types';
-let def = require('../styles/themes/Charcoal.json');
+import { StyleSchema } from '../../components/Tools/brains/Types';
+let def = require('../../themes/Charcoal.json');
 
 export interface StyleState {
     readonly style: StyleSchema;

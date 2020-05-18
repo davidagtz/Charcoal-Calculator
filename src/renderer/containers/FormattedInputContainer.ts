@@ -2,10 +2,9 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 import FormattedInput from '../components/MainPage/FormattedInput';
-import { RootState } from '../reducers';
-import { InputAction, chgExp, addExp } from '../actions/formattedInputActions';
+import { RootState } from '../redux/reducers';
+import { InputAction, chgExp, addExp } from '../redux/actions/formattedInputActions';
 import { VarFunction } from '../components/Tools/brains/Types';
-import { RootActions } from '../actions';
 
 const mapStateToProps = (state: RootState) => ({
     expressions: state.input.expressions,
