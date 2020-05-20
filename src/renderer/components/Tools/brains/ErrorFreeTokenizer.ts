@@ -1,4 +1,4 @@
-import { Token, TYPE, InvalidCharacterError } from './Types';
+import { Token, TYPE } from './Types';
 import { isalpha, makeToken, isnum, isop, getop, iswhitespace } from './JSChar';
 import { OPERATORS } from './Tokenizer';
 
