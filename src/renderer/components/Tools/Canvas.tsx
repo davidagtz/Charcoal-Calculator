@@ -37,8 +37,8 @@ export default class Canvas<P = {}, S = {}> extends Component<P, S> {
 		this.ctx.fillRect(
 			this._tX(x1),
 			this._tY(y1),
-			this._tX(x2),
-			this._tY(y2)
+			this._scale.x * x2,
+			this._scale.y * y2
 		);
 	}
 

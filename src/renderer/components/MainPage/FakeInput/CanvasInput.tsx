@@ -56,10 +56,10 @@ export default class CanvasInput extends Canvas<{
 	componentDidUpdate() {
 		this.setup(this.props.id + "-canvas");
 		this.ctx.imageSmoothingEnabled = false;
-		this.em = this.height;
+		this.em = (2 * this.height) / 3;
 		this.strokeWeight(0);
 
-		this.translate(0, this.height);
+		this.translate(0, this.height - (1.1 * this.em) / 3);
 		this.scaleY(-1);
 
 		this.fill("#000");
@@ -67,38 +67,86 @@ export default class CanvasInput extends Canvas<{
 	}
 
 	drawTree = () => {
+		this.cursor.x = 0;
+		this.cursor.y = 0;
+
 		const start = this.getTextArea().selectionStart;
 
 		let index = 0;
 		let x = 0;
 		let y = 0;
+		let hasDrawn = false;
 
-		this.tree.forEach((e) => (e ? _drawTree.bind(this)(e) : null));
+		this.tree.forEach((e) => (e ? draw.bind(this)(e) : null));
 
-		function _drawTree(this: any, node: ParseNode, size: number = 1) {
+		function draw(this: any, node: ParseNode, size: number = 1) {
+			this._font = `${size * this.em}px Helvetica`;
 			if (
 				node.type === TYPE.NUMBER ||
 				node.type === TYPE.VARIABLE ||
 				node.type === TYPE.UNKNOWN
 			) {
-				this._font = `${size * this.em}px Arial`;
+				putCursor.bind(this)(node.value + "");
+			} else if (node.type === TYPE.OPERATION) {
+				if (node.value === "+" || node.value === "-") {
+					if (node.left) draw.bind(this)(node.left, size);
 
-				this.text(node.value as string, x, y);
-				const length = (node.value + "").length;
+					putCursor.bind(this)(node.value as string);
 
-				if (index <= start && start <= index + length) {
+					if (node.right) draw.bind(this)(node.right, size);
+				} else if (node.value === "*") {
+					if (node.left) draw.bind(this)(node.left, size);
+
+					const pY = y;
+					y += (size * this.em) / 4;
+					putCursor.bind(this)(".");
+					y = pY;
+
+					if (node.right) draw.bind(this)(node.right, size);
+				} else if (node.value === "^") {
+					if (node.left) draw.bind(this)(node.left, size);
+
+					const pY = y;
+					y += (size * this.em) / 2;
+					if (
+						!hasDrawn &&
+						index <= start &&
+						start <= index + 1
+					) {
+						this.clearCursor();
+						this.cursor.x = x;
+						this.cursor.y = y;
+						this.cursor.height = size / 2;
+						this.drawCursor();
+						hasDrawn = true;
+					}
+					index++;
+
+					if (node.right) draw.bind(this)(node.right, size / 2);
+
+					y = pY;
+				}
+			}
+			function putCursor(this: any, str: string) {
+				this.text(str, x, y);
+				const length = str.length;
+
+				if (
+					!hasDrawn &&
+					index <= start &&
+					start <= index + length
+				) {
 					this.clearCursor();
 					this.cursor.x =
 						x +
-						this.textWidth(
-							("" + node.value).substring(0, start - index)
-						);
+						this.textWidth(str.substring(0, start - index));
+					this.cursor.y = y;
+					this.cursor.height = size;
 					this.drawCursor();
+					hasDrawn = true;
 				}
-
-				x += this.textWidth(node.value as string);
+				x += this.textWidth(str);
 				index += length;
-				return;
 			}
 		}
 	};
@@ -133,22 +181,22 @@ export default class CanvasInput extends Canvas<{
 			}, 750);
 	};
 
-	drawCursor(size: number = 1) {
+	drawCursor() {
 		this.fill("#000");
 		this.rect(
 			this.cursor.x,
-			this.cursor.y + size * this.em,
+			this.cursor.y,
 			2,
-			this.cursor.y
+			this.cursor.height * this.em
 		);
 	}
-	clearCursor(size: number = 1) {
+	clearCursor() {
 		this.fill("#fff");
 		this.rect(
 			this.cursor.x,
-			this.cursor.y + size * this.em,
+			this.cursor.y,
 			2,
-			this.cursor.y
+			this.cursor.height * this.em
 		);
 	}
 
