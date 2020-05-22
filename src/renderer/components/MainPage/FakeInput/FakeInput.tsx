@@ -13,6 +13,7 @@ export default class FakeInput extends React.Component<{
 	state = {
 		text: "",
 	};
+	x = 0;
 	render() {
 		const parser = new ErrorFreeParser(this.state.text);
 		return (
@@ -31,6 +32,7 @@ export default class FakeInput extends React.Component<{
 					onFocus={this.putCursor}
 				/>
 				<span id={this.props.id + "-span"}>
+					<div id="cursor"></div>
 					{charFormat(parser.parseAll(), "fo-1")}
 				</span>
 			</div>
@@ -63,64 +65,73 @@ export default class FakeInput extends React.Component<{
 
 	putCursor = () => {
 		const eq = document.getElementById("fo-1") as HTMLDivElement;
-
-		const cursor = document.getElementById("cursor");
-		if (cursor) {
-			cursor.remove();
-		}
+		const cursor = document.getElementById("cursor") as HTMLDivElement;
 
 		const find = this.getTextArea().selectionStart;
 		let index = 0;
-		let beenFound = false;
+		this.x = cursor.clientWidth;
 
 		if (find === 0 && eq.children.length === 0) {
-			const nC = document.createElement("div");
-			nC.id = "cursor";
-			nC.style.left = "0px";
-
-			eq.prepend(nC);
+			cursor.style.left = "0";
 			return;
 		}
 
 		_put.bind(this)(eq);
 
-		function _put(this: any, el: HTMLElement): boolean {
+		function _put(this: any, el: Element): boolean {
 			for (let i = 0; i < el.children.length; i++) {
 				const child = el.children[i];
+				const value = child.innerHTML;
+				const innerI = find - index;
+
 				if (child.className === "format-value") {
-					const value = child.innerHTML;
-					if (
-						!beenFound &&
-						index <= find &&
-						find <= index + value.length
-					) {
-						const nC = document.createElement("div");
-						nC.id = "cursor";
-
-						const innerI = find - index;
-						nC.style.left =
-							this.textWidth(
-								value.substring(0, innerI),
-								getComputedStyle(child).font
-							) + "px";
-
-						console.log(
-							this.textWidth(
-								value.substring(0, innerI),
-								getComputedStyle(child).fontSize
-							),
-							getComputedStyle(child).fontSize
+					if (index <= find && find <= index + value.length) {
+						const nX = this.textWidth(
+							value.substring(0, innerI),
+							getComputedStyle(child).font
 						);
+						cursor.style.left = this.x + nX + "px";
 
-						child.prepend(nC);
-
-						beenFound = true;
+						return true;
 					}
+					this.x += child.clientWidth;
 					index += value.length;
+				} else if (child.className === "sign") {
+					const nX = child.getBoundingClientRect().width;
+					if (index <= find && find <= index + 1) {
+						cursor.style.left = this.x + nX + "px";
+						return true;
+					}
+					this.x += nX;
+					index++;
+				} else {
+					if (_put.bind(this)(child)) return true;
 				}
 			}
 			return false;
 		}
+		// const nC = document.createElement("div");
+		// if (cursor) {
+		// 	cursor.remove();
+		// }
+		// nC.id = "cursor";
+		// } else if (child.className === "sign") {
+		// 	if (index <= find && find <= index + value.length) {
+		// 		const nX = this.textWidth(
+		// 			value.substring(0, innerI),
+		// 			getComputedStyle(child).font
+		// 		);
+		// 		cursor!.style.left = this.x + nX + "px";
+		// 		// nC.style.left = nX + "px";
+		// 		// x += nX;
+		// 		// cursor!.style.left = x + "px";
+
+		// 		// child.prepend(nC);
+
+		// 		return true;
+		// 	}
+		// 	this.x += child.clientWidth;
+		// 	index += value.length;
 	};
 
 	fakeEl: HTMLElement | null = null;
@@ -141,7 +152,7 @@ export default class FakeInput extends React.Component<{
 		) as HTMLTextAreaElement;
 
 	blur = () => {
-		document.getElementById("cursor")!.remove();
+		// document.getElementById("cursor")!.remove();
 	};
 
 	focus = () => {
