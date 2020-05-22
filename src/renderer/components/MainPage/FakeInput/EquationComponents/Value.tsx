@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 
 export default class Value extends React.Component<{
-    value: number | string;
+	value: number | string;
 }> {
-    render() {
-        return <div className="value">{this.props.value}</div>;
-    }
+	render() {
+		return <div className="format-value">{this.props.value}</div>;
+	}
 }

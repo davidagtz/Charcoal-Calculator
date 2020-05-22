@@ -5,7 +5,7 @@ import { loadMathJax } from "../../mathjax-electron/index";
 import { ExpressionProps, StyleSchema } from "../Tools/brains/Types";
 import FakeInput from "./FakeInput/FakeInput";
 import { isFunction, toFunction } from "../Tools/brains/ParseNode";
-import CanvasInput from "./FakeInput/CanvasInput";
+import CanvasInput from "./FakeInput/legacy/CanvasInput";
 require("./styles/FormattedInput.sass");
 
 interface Props extends ExpressionProps {
@@ -111,15 +111,14 @@ export default class FormattedInput extends Component<Props> {
 					color: this.props.style.Calculator.font,
 				}}
 			>
-				{/* <FakeInput
+				<FakeInput
 					id="fake-1"
 					style={{
 						backgroundColor: this.props.style.Calculator.input
 							.background,
 						color: this.props.style.Calculator.input.font,
 					}}
-				/> */}
-				<CanvasInput id="cin-1" />
+				/>
 				<p id="to-format">{this.state.html}</p>
 			</div>
 			// <div
