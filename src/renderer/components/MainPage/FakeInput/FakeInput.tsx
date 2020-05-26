@@ -70,6 +70,8 @@ export default class FakeInput extends React.Component<{
 		const find = this.getTextArea().selectionStart;
 		let index = 0;
 		this.x = cursor.clientWidth;
+		cursor.style.height = eq.clientHeight + "px";
+		cursor.style.top = "0";
 
 		if (find === 0 && eq.children.length === 0) {
 			cursor.style.left = "0";
@@ -104,34 +106,28 @@ export default class FakeInput extends React.Component<{
 					}
 					this.x += nX;
 					index++;
+				} else if (child.className === "raise") {
+					if (index <= find && find <= index + 1) {
+						cursor.style.left = this.x + "px";
+						cursor.style.height = child.clientHeight + "px";
+						cursor.style.top = "-.75em";
+						return true;
+					}
+					index++;
+
+					const top = cursor.style.top;
+					const height = cursor.style.height;
+					cursor.style.top = "-.75em";
+					cursor.style.height = child.clientHeight + "px";
+					if (_put.bind(this)(child)) return true;
+					cursor.style.top = top;
+					cursor.style.height = height;
 				} else {
 					if (_put.bind(this)(child)) return true;
 				}
 			}
 			return false;
 		}
-		// const nC = document.createElement("div");
-		// if (cursor) {
-		// 	cursor.remove();
-		// }
-		// nC.id = "cursor";
-		// } else if (child.className === "sign") {
-		// 	if (index <= find && find <= index + value.length) {
-		// 		const nX = this.textWidth(
-		// 			value.substring(0, innerI),
-		// 			getComputedStyle(child).font
-		// 		);
-		// 		cursor!.style.left = this.x + nX + "px";
-		// 		// nC.style.left = nX + "px";
-		// 		// x += nX;
-		// 		// cursor!.style.left = x + "px";
-
-		// 		// child.prepend(nC);
-
-		// 		return true;
-		// 	}
-		// 	this.x += child.clientWidth;
-		// 	index += value.length;
 	};
 
 	fakeEl: HTMLElement | null = null;
