@@ -7,7 +7,7 @@ import Subtraction from "./Subtraction";
 import Exponent from "./Exponent";
 import Parentheses from "./Parentheses";
 import Value from "./Value";
-require("./EquationComponents.sass");
+// require("./EquationComponents.sass");
 
 export function charFormat(
 	tree: (ParseNode | null)[],

@@ -2,6 +2,7 @@ import React, { CSSProperties } from "react";
 import ErrorFreeParser from "../../Tools/brains/ErrorFreeParser";
 import { charFormatHTML } from "./FormatterHTML";
 require("./FakeInput.sass");
+require("./EquationComponents.sass");
 
 export default class FakeInput extends React.Component<{
 	style: CSSProperties;
@@ -28,7 +29,9 @@ export default class FakeInput extends React.Component<{
 				/>
 				<span id={this.props.id + "-span"}>
 					<div id="cursor"></div>
-					<span id={this.props.id + "-replace"} />
+					<span id={this.props.id + "-replace"}>
+						<div id="fo-1"></div>
+					</span>
 				</span>
 			</div>
 		);
