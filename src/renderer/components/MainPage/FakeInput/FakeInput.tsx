@@ -1,8 +1,7 @@
 import React, { CSSProperties } from "react";
 import ErrorFreeParser from "../../Tools/brains/ErrorFreeParser";
 import { charFormat } from "./EquationComponents/Formatter";
-// import Parser, { isFunction } from '../../Tools/brains/Parser';
-// import { toTex } from '../../Tools/brains/Calculator';
+import { charFormatHTML } from "./EquationComponents/FormatterHTML";
 require("./FakeInput.sass");
 
 export default class FakeInput extends React.Component<{
@@ -10,12 +9,9 @@ export default class FakeInput extends React.Component<{
 	id: string;
 }> {
 	interval = null as null | NodeJS.Timeout;
-	state = {
-		text: "",
-	};
 	x = 0;
+
 	render() {
-		const parser = new ErrorFreeParser(this.state.text);
 		return (
 			<div
 				id={this.props.id}
@@ -33,7 +29,7 @@ export default class FakeInput extends React.Component<{
 				/>
 				<span id={this.props.id + "-span"}>
 					<div id="cursor"></div>
-					{charFormat(parser.parseAll(), "fo-1")}
+					<span id={this.props.id + "-replace"} />
 				</span>
 			</div>
 		);
@@ -44,10 +40,14 @@ export default class FakeInput extends React.Component<{
 		const text = document.getElementById(
 			this.props.id + "-text"
 		) as HTMLTextAreaElement;
-		this.setState({
-			text: text.value,
-		});
+
+		const replace = document.getElementById(this.props.id + "-replace")!;
+		replace.innerHTML = "";
+
+		const parser = new ErrorFreeParser(text.value);
+		replace.appendChild(charFormatHTML(parser.parseAll(), "fo-1"));
 	};
+
 	componentDidUpdate() {
 		if (this.interval) clearInterval(this.interval);
 		this.interval = setInterval(() => {
@@ -159,12 +159,6 @@ export default class FakeInput extends React.Component<{
 	};
 	componentWillUnmount() {
 		if (this.interval) clearInterval(this.interval);
-		// this.blur = () => {};
-		// const text = document.getElementById(this.props.id + "-text");
-		// if (text) {
-		// 	text.onblur = null;
-		// 	text.onchange = null;
-		// }
 	}
 	format = () => {
 		// const parser = new ErrorFreeParser(this.state.text);
