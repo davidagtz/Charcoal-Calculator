@@ -30,7 +30,7 @@ export default class FakeInput extends React.Component<{
 				<span id={this.props.id + "-span"}>
 					<div id="cursor"></div>
 					<span id={this.props.id + "-replace"}>
-						<div id="fo-1"></div>
+						<div id="fo-1" />
 					</span>
 				</span>
 			</div>
@@ -51,18 +51,17 @@ export default class FakeInput extends React.Component<{
 	};
 
 	componentDidUpdate() {
-		if (this.interval) clearInterval(this.interval);
-		this.interval = setInterval(() => {
-			const cursor = document.getElementById(
-				"cursor"
-			) as HTMLDivElement;
-			if (cursor)
-				if (cursor.className === "") {
-					cursor.className = "active";
-				} else {
-					cursor.className = "";
-				}
-		}, 500);
+		// if (this.interval) clearInterval(this.interval);
+		// this.interval = setInterval(() => {
+		// 	const cursor = document.getElementById(
+		// 		"cursor"
+		// 	) as HTMLDivElement;
+		// 	if (cursor.className === "") {
+		// 		cursor.className = "active";
+		// 	} else {
+		// 		cursor.className = "";
+		// 	}
+		// }, 500);
 	}
 
 	putCursor = () => {
@@ -72,7 +71,7 @@ export default class FakeInput extends React.Component<{
 		const find = this.getTextArea().selectionStart;
 		let index = 0;
 		this.x = cursor.clientWidth;
-		cursor.style.height = eq.clientHeight + "px";
+		cursor.style.height = eq.style.fontSize + "px";
 		cursor.style.top = "0";
 
 		if (find === 0 && eq.children.length === 0) {
@@ -150,14 +149,25 @@ export default class FakeInput extends React.Component<{
 		) as HTMLTextAreaElement;
 
 	blur = () => {
-		// document.getElementById("cursor")!.remove();
+		const cursor = document.getElementById("cursor") as HTMLDivElement;
+		cursor.className = "";
+		clearInterval(this.interval!);
 	};
 
 	focus = () => {
 		const input = this.getTextArea();
-		setTimeout(() => {
-			input.focus();
-		}, 0);
+		this.interval = setInterval(() => {
+			const cursor = document.getElementById(
+				"cursor"
+			) as HTMLDivElement;
+			if (cursor.className === "") {
+				cursor.className = "active";
+			} else {
+				cursor.className = "";
+			}
+		}, 500);
+
+		setTimeout(() => input.focus(), 0);
 	};
 	componentWillUnmount() {
 		if (this.interval) clearInterval(this.interval);
