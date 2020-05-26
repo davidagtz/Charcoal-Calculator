@@ -1,4 +1,4 @@
-import { ParseNode, TYPE } from "../../../Tools/brains/Types";
+import { ParseNode, TYPE } from "../../Tools/brains/Types";
 require("./EquationComponents.sass");
 
 export function charFormatHTML(

@@ -1,7 +1,6 @@
 import React, { CSSProperties } from "react";
 import ErrorFreeParser from "../../Tools/brains/ErrorFreeParser";
-import { charFormat } from "./EquationComponents/Formatter";
-import { charFormatHTML } from "./EquationComponents/FormatterHTML";
+import { charFormatHTML } from "./FormatterHTML";
 require("./FakeInput.sass");
 
 export default class FakeInput extends React.Component<{
