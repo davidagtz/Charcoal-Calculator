@@ -51,7 +51,9 @@ export default class TitleBar extends Component<{
             children.push(
                 <HoverButton
                     key={e.label}
-                    onhover={{ backgroundColor: this.props.style.defaultButtons.hover }}
+                    onhover={{
+                        backgroundColor: this.props.style.defaultButtons.hover
+                    }}
                     className="title-button"
                     onClick={click}
                 >
@@ -71,9 +73,15 @@ export default class TitleBar extends Component<{
             if (item.type === 'separator') className = 'separator';
             children.push(
                 <HoverButton
-                    style={{ backgroundColor: this.props.style.defaultButtons.hover }}
-                    onhover={{ backgroundColor: this.props.style.TitleBar.buttons.submenuhover }}
-                    onactive={{ backgroundColor: this.props.style.defaultButtons.active }}
+                    style={{
+                        backgroundColor: this.props.style.defaultButtons.hover
+                    }}
+                    onhover={{
+                        backgroundColor: this.props.style.TitleBar.buttons.submenuhover
+                    }}
+                    onactive={{
+                        backgroundColor: this.props.style.defaultButtons.active
+                    }}
                     key={i}
                     className={className}
                     onClick={() => item.click()}
@@ -85,7 +93,9 @@ export default class TitleBar extends Component<{
         return <div className="list">{children}</div>;
     }
 
-    quitApp = () => remote.app.quit();
+    quitApp() {
+        remote.app.quit();
+    }
 
     minMax() {
         const win = remote.getCurrentWindow();
@@ -93,5 +103,7 @@ export default class TitleBar extends Component<{
         else win.maximize();
     }
 
-    minimize = () => remote.getCurrentWindow().minimize();
+    minimize() {
+        remote.getCurrentWindow().minimize();
+    }
 }
