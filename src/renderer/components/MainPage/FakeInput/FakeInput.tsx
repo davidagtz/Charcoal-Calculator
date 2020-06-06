@@ -168,10 +168,13 @@ export default class FakeInput extends React.Component<{
         const cursor = document.getElementById(this.props.id + '-cursor') as HTMLElement;
         cursor.className = 'cursor';
         clearInterval(this.interval!);
+        this.interval = null;
     }
 
     focus() {
+        console.log('focusing');
         if (this.interval) return;
+        console.log('Making Interval');
         const input = this.getTextArea();
         this.interval = setInterval(() => {
             const cursor = document.getElementById(this.props.id + '-cursor') as HTMLElement;
