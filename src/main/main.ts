@@ -24,10 +24,10 @@ const createWindow = async () => {
         width: 800,
         height: 600,
         frame: false,
-        webPreferences: {
-            webSecurity: false
-        }
+        title: 'Charcoal',
+        icon: __dirname + '/../icon/64.png'
     });
+
     const m = Menu.buildFromTemplate(menu(win) as any);
     Menu.setApplicationMenu(m);
 
@@ -55,6 +55,8 @@ const createWindow = async () => {
         win = null;
     });
 };
+
+app.setName('Charcoal');
 
 app.on('ready', createWindow);
 
