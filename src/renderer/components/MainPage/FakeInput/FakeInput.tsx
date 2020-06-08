@@ -46,16 +46,16 @@ export default class FakeInput extends React.Component<{
                 />
                 <span id={this.props.id + '-span'}>
                     <div id={this.props.id + '-cursor'} className="cursor" />
-                    <span id={this.props.id + '-replace'}>
+                    <div id={this.props.id + '-replace'}>
                         <div id={this.props.id + '-fo'} />
-                    </span>
+                    </div>
                 </span>
             </div>
         );
     }
 
     onChange() {
-        const text = document.getElementById(this.props.id + '-text') as HTMLTextAreaElement;
+        const text = this.getTextArea();
         const val = text.value;
         if (val[val.length - 1] === '\n') {
             text.value = val.substring(0, val.length);
@@ -73,7 +73,7 @@ export default class FakeInput extends React.Component<{
     }
 
     changeText() {
-        const text = document.getElementById(this.props.id + '-text') as HTMLTextAreaElement;
+        const text = this.getTextArea();
 
         const replace = document.getElementById(this.props.id + '-replace')!;
         replace.innerHTML = '';
@@ -85,16 +85,19 @@ export default class FakeInput extends React.Component<{
     cursor: HTMLDivElement | null = null;
     index = 0;
     find = 0;
-    eqStyle: CSSStyleDeclaration | null = null;
     putCursor() {
         const eq = document.getElementById(this.props.id + '-fo') as HTMLDivElement;
         this.cursor = document.getElementById(this.props.id + '-cursor') as HTMLDivElement;
 
+        this.cursor.style.height = '0';
+        this.cursor.style.height = getComputedStyle(
+            document.getElementById(this.props.id + '-replace')!
+        ).height;
+        this.cursor.style.top = '0';
+
         this.find = this.getTextArea().selectionStart;
         this.index = 0;
         this.x = this.cursor.clientWidth;
-        this.cursor.style.height = this.eqStyle!.fontSize;
-        this.cursor.style.top = '0';
 
         if (this.find === 0 && eq.children.length === 0) {
             this.cursor.style.left = '0';
@@ -193,10 +196,6 @@ export default class FakeInput extends React.Component<{
         // this.putCursor();
 
         setTimeout(() => input.focus(), 0);
-    }
-
-    componentDidMount() {
-        this.eqStyle = getComputedStyle(document.getElementById(this.props.id)!);
     }
 
     componentWillUnmount() {

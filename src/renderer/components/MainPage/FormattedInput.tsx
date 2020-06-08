@@ -25,7 +25,6 @@ export default class FormattedInput extends Component<Props> {
 
     inputChange(rowNumber: number) {
         return () => {
-            console.log('D');
             const i = document.getElementById(`finput-${rowNumber}-text`) as HTMLTextAreaElement;
 
             try {
