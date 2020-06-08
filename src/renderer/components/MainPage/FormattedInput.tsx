@@ -120,10 +120,12 @@ export default class FormattedInput extends Component<Props> {
                     className={this.state.error[key] ? ' error' : ''}
                     onChange={this.inputChange(key)}
                 />
-                <div className={'ans' + (this.state.error[key] ? ' error' : '')}>
-                    {this.state.error[key] || !this.state.value[key]
-                        ? ''
-                        : '=\u00A0' + this.state.value[key]}
+                <div className="ans-cont">
+                    <div className={'ans' + (this.state.error[key] ? ' error' : '')}>
+                        {this.state.error[key] || !this.state.value[key]
+                            ? ''
+                            : '=\u00A0' + this.state.value[key]}
+                    </div>
                 </div>
             </div>
         );

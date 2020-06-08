@@ -55,6 +55,12 @@ export default class FakeInput extends React.Component<{
     }
 
     onChange() {
+        const text = document.getElementById(this.props.id + '-text') as HTMLTextAreaElement;
+        const val = text.value;
+        if (val[val.length - 1] === '\n') {
+            text.value = val.substring(0, val.length);
+            return;
+        }
         this.changeText();
         if (this.props.onChange) this.props.onChange();
     }
