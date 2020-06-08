@@ -39,13 +39,13 @@ export default class FakeInput extends React.Component<{
                 <textarea
                     id={this.props.id + '-text'}
                     className="hide-text"
-                    onChange={this.changeText}
+                    onChange={this.onChange}
                     onBlur={this.blur}
                     onKeyUp={this.onKeyPress}
                     onFocus={this.focus}
                 />
                 <span id={this.props.id + '-span'}>
-                    <div id={this.props.id + '-cursor'} className="cursor"></div>
+                    <div id={this.props.id + '-cursor'} className="cursor" />
                     <span id={this.props.id + '-replace'}>
                         <div id={this.props.id + '-fo'} />
                     </span>
@@ -79,6 +79,7 @@ export default class FakeInput extends React.Component<{
     cursor: HTMLDivElement | null = null;
     index = 0;
     find = 0;
+    eqStyle: CSSStyleDeclaration | null = null;
     putCursor() {
         const eq = document.getElementById(this.props.id + '-fo') as HTMLDivElement;
         this.cursor = document.getElementById(this.props.id + '-cursor') as HTMLDivElement;
@@ -86,7 +87,7 @@ export default class FakeInput extends React.Component<{
         this.find = this.getTextArea().selectionStart;
         this.index = 0;
         this.x = this.cursor.clientWidth;
-        this.cursor.style.height = eq.style.fontSize + 'px';
+        this.cursor.style.height = this.eqStyle!.fontSize;
         this.cursor.style.top = '0';
 
         if (this.find === 0 && eq.children.length === 0) {
@@ -111,7 +112,7 @@ export default class FakeInput extends React.Component<{
                         value.substring(0, innerI),
                         getComputedStyle(child).font
                     );
-                    cursor.style.left = this.x + nX + 'px';
+                    cursor.style.left = `${this.x + nX}px`;
 
                     return true;
                 }
@@ -120,7 +121,7 @@ export default class FakeInput extends React.Component<{
             } else if (child.className === 'sign') {
                 const nX = child.getBoundingClientRect().width;
                 if (this.index <= find && find <= this.index + 1) {
-                    cursor.style.left = this.x + nX + 'px';
+                    cursor.style.left = `${this.x + nX}px`;
                     return true;
                 }
                 this.x += nX;
@@ -172,9 +173,7 @@ export default class FakeInput extends React.Component<{
     }
 
     focus() {
-        console.log('focusing');
         if (this.interval) return;
-        console.log('Making Interval');
         const input = this.getTextArea();
         this.interval = setInterval(() => {
             const cursor = document.getElementById(this.props.id + '-cursor') as HTMLElement;
@@ -189,6 +188,11 @@ export default class FakeInput extends React.Component<{
 
         setTimeout(() => input.focus(), 0);
     }
+
+    componentDidMount() {
+        this.eqStyle = getComputedStyle(document.getElementById(this.props.id)!);
+    }
+
     componentWillUnmount() {
         if (this.interval) clearInterval(this.interval);
     }

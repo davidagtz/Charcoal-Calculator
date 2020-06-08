@@ -1,6 +1,6 @@
 import { ParseNode, TYPE, VarFunction } from './Types';
 
-export default function calculate(tree: ParseNode): number {
+export function calculate(tree: ParseNode): number {
     if (tree.type === TYPE.NUMBER) return tree.value as number;
     if (tree.type === TYPE.OPERATION) {
         const left = calculate(tree.left!);

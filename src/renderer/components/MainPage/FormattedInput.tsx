@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Parser from '../Tools/brains/Parser';
-import calculate, { toTex } from '../Tools/brains/Calculator';
+import { calculate, toTex } from '../Tools/brains/Calculator';
 import { ExpressionProps, StyleSchema } from '../Tools/brains/Types';
 import FakeInput from './FakeInput/FakeInput';
 import { isFunction, toFunction } from '../Tools/brains/ParseNode';
@@ -25,20 +25,23 @@ export default class FormattedInput extends Component<Props> {
 
     inputChange(rowNumber: number) {
         return () => {
-            const i = document.getElementById(
-                'finput-' + rowNumber + '-text'
-            ) as HTMLTextAreaElement;
+            console.log('D');
+            const i = document.getElementById(`finput-${rowNumber}-text`) as HTMLTextAreaElement;
 
             try {
                 const tree = new Parser(i.value).parse();
                 let tex = '';
                 let result = 0;
                 if (tree) {
-                    if (isFunction(tree))
-                        if (this.props.expressions.length > rowNumber)
+                    if (isFunction(tree)) {
+                        if (this.props.expressions.length > rowNumber) {
                             this.props.changeExpression(rowNumber, toFunction(tree)!);
-                        else this.props.addExpression(toFunction(tree)!);
-                    else result = calculate(tree);
+                        } else {
+                            this.props.addExpression(toFunction(tree)!);
+                        }
+                    } else {
+                        result = calculate(tree);
+                    }
 
                     tex = toTex(tree);
                 }
@@ -52,8 +55,12 @@ export default class FormattedInput extends Component<Props> {
                 this.setState({ error: errors, value: results, html: tex });
             } catch (e) {
                 const errors = this.state.error;
-                if (i.value.trim() !== '') errors[rowNumber] = true;
-                else errors[rowNumber] = false;
+
+                if (i.value.trim() !== '') {
+                    errors[rowNumber] = true;
+                } else {
+                    errors[rowNumber] = false;
+                }
 
                 const results = this.state.value;
                 results[rowNumber] = 0;
@@ -61,7 +68,7 @@ export default class FormattedInput extends Component<Props> {
                 this.setState({ error: errors, result: results, html: '' });
                 this.props.changeExpression(rowNumber, null);
 
-                console.error(e);
+                // console.error(e);
             }
         };
     }
@@ -69,7 +76,7 @@ export default class FormattedInput extends Component<Props> {
     componentDidUpdate() {
         if (this.changeFocus !== -1) {
             setTimeout(() => {
-                document.getElementById('finput-' + this.changeFocus + '-text')!.focus();
+                document.getElementById(`finput-${this.changeFocus}-text`)!.focus();
                 this.changeFocus = -1;
             }, 0);
         }
@@ -83,7 +90,6 @@ export default class FormattedInput extends Component<Props> {
     }
     render() {
         const rows = [] as React.ReactNode[];
-        console.log(this.state.rows);
         for (let i = 0; i < this.state.rows; i += 1) {
             rows.push(this.makeInput(i));
         }
@@ -97,17 +103,6 @@ export default class FormattedInput extends Component<Props> {
                 }}
             >
                 {rows}
-                {/* <FakeInput
-					id={"finput-0"}
-					style={{
-						backgroundColor: this.props.style.Calculator.input
-							.background,
-						color: this.props.style.Calculator.input.font,
-					}}
-					onKeyPress={this.addRow}
-					className={this.state.error[0] ? " error" : ""}
-					onChange={this.inputChange(0)}
-				/> */}
             </div>
         );
     }
