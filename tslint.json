@@ -17,7 +17,7 @@
         "jsx-equals-spacing": [true, "never"],
         "jsx-no-string-ref": true,
         "jsx-self-close": true,
-        "import-name": [true, { "react": "React" }],
+        "import-name": [true, { "react": "React", "reactDom": "ReactDOM" }],
         "prefer-template": [true, "allow-single-concat"],
         "increment-decrement": [true, "allow-post"],
         "function-name": [

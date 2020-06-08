@@ -1,13 +1,16 @@
 import React from 'react';
 import Canvas from '../Tools/Canvas';
-import { ExpressionProps, StyleSchema } from '../Tools/brains/Types';
+import { StyleSchema, VarFunction } from '../Tools/brains/Types';
 import { solve } from '../Tools/brains/Calculator';
 import Home from '../res/Home';
 require('./styles/Graph.sass');
 
-interface Props extends ExpressionProps {
+interface Props {
     id: string;
     style: StyleSchema;
+    expressions: {
+        [index: number]: VarFunction;
+    };
 }
 
 export default class Graph extends Canvas<Props> {
@@ -96,8 +99,9 @@ export default class Graph extends Canvas<Props> {
             }
         }
 
-        for (let i = 0; i < this.props.expressions.length; i += 1) {
-            const eq = this.props.expressions[i];
+        let i = 0;
+        for (const key in this.props.expressions) {
+            const eq = this.props.expressions[key];
             if (eq && eq.arguments.length <= 1) {
                 this.stroke(
                     this.props.style.Graph.equationColors[
@@ -116,6 +120,7 @@ export default class Graph extends Canvas<Props> {
                     prevY = newY;
                 }
             }
+            i++;
         }
     }
 

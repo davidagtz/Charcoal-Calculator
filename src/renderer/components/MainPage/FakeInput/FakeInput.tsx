@@ -7,9 +7,10 @@ require('./EquationComponents.sass');
 export default class FakeInput extends React.Component<{
     style: CSSProperties;
     id: string;
-    onKeyPress?: (e: React.KeyboardEvent<Element>) => void;
+    onKeyPress?: (e: React.KeyboardEvent<Element>, ...args: any[]) => void;
     className?: string;
     onChange?: () => void;
+    'data-key'?: number;
 }> {
     interval = null as null | NodeJS.Timeout;
     x = 0;
@@ -28,6 +29,7 @@ export default class FakeInput extends React.Component<{
         this._put = this._put.bind(this);
     }
 
+    prev: string = '1';
     render() {
         return (
             <div
@@ -43,6 +45,7 @@ export default class FakeInput extends React.Component<{
                     onBlur={this.blur}
                     onKeyUp={this.onKeyPress}
                     onFocus={this.focus}
+                    data-key={this.props['data-key']}
                 />
                 <span id={this.props.id + '-span'}>
                     <div id={this.props.id + '-cursor'} className="cursor" />
@@ -68,8 +71,9 @@ export default class FakeInput extends React.Component<{
     onKeyPress(e: React.KeyboardEvent<Element>) {
         this.putCursor();
         if (this.props.onKeyPress) {
-            this.props.onKeyPress(e);
+            this.props.onKeyPress(e, this.prev);
         }
+        this.prev = this.getTextArea().value;
     }
 
     changeText() {

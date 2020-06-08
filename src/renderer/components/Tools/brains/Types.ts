@@ -35,9 +35,10 @@ export interface VarFunction {
 }
 
 export interface ExpressionProps {
-    expressions: (VarFunction | null)[];
+    expressions: {
+        [index: number]: VarFunction;
+    };
     changeExpression: (i: number, exp: VarFunction | null) => void;
-    addExpression: (exp: VarFunction | null) => void;
 }
 
 export interface StyleSchema {

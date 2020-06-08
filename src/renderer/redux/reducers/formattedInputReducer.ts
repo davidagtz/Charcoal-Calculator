@@ -1,14 +1,16 @@
 import { Reducer } from 'redux';
 
-import { CHG_EXP, ADD_EXP, InputAction } from '../actions/formattedInputActions';
+import { CHG_EXP, InputAction } from '../actions/formattedInputActions';
 import { VarFunction } from '../../components/Tools/brains/Types';
 
 export interface InputState {
-    readonly expressions: (VarFunction | null)[];
+    readonly expressions: {
+        [index: number]: VarFunction;
+    };
 }
 
 const defaultState: InputState = {
-    expressions: []
+    expressions: {}
 };
 
 export const formattedInputReducer: Reducer<InputState, InputAction> = (
@@ -17,16 +19,13 @@ export const formattedInputReducer: Reducer<InputState, InputAction> = (
 ) => {
     switch (action.type) {
         case CHG_EXP:
-            const expressions = [...state.expressions];
-            expressions[action.i] = action.exp;
+            const expressions = { ...state.expressions };
+
+            if (!action.exp) delete expressions[action.i];
+            else expressions[action.i] = action.exp;
+
             return {
-                ...state,
                 expressions
-            };
-        case ADD_EXP:
-            return {
-                ...state,
-                expressions: state.expressions.concat(action.exp)
             };
         default:
             return state;
