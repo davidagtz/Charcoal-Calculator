@@ -1,13 +1,12 @@
 import React from 'react';
 import { StyleSchema } from '../Tools/brains/Types';
 import HoverButton from '../Tools/HoverButton';
-import Ajv from 'ajv';
+import ajv from 'ajv';
 import { readFile, readdirSync } from 'fs';
-import * as path from 'path';
 const schema = require('../../themes/themes.schema.json');
 
-const ajv = new Ajv();
-const validate = ajv.compile(schema);
+const AJV = new ajv();
+const validate = AJV.compile(schema);
 
 export default class ThemePicker extends React.Component<{
     style: StyleSchema;
@@ -16,8 +15,12 @@ export default class ThemePicker extends React.Component<{
     state = {
         file: null as string | null,
         errors: null as null | string[],
-        defaultFolder: 'C:/Users/david/Documents/Fun/Calculator/src/renderer/themes'
+        defaultFolder: 'src/renderer/themes'
     };
+
+    inputRef: React.RefObject<HTMLInputElement> = React.createRef();
+    folderRef: React.RefObject<HTMLSelectElement> = React.createRef();
+
     render() {
         const options = [];
         const folder = readdirSync(this.state.defaultFolder);
@@ -38,7 +41,7 @@ export default class ThemePicker extends React.Component<{
             const name = file.split('.')[0];
             if (name === 'themes') continue;
             options.push(
-                <option key={name} value={this.state.defaultFolder + '/' + file}>
+                <option key={name} value={`${this.state.defaultFolder}/${file}`}>
                     {name}
                 </option>
             );
@@ -47,26 +50,21 @@ export default class ThemePicker extends React.Component<{
             <div id="theme-picker" style={{ color: style.Calculator.font }}>
                 <h3>Themes</h3>
                 <div className="separator" style={{ backgroundColor: style.TitleBar.background }} />
-                <label htmlFor="theme-file">Choose Theme: </label>
-                <input
-                    name="theme-file"
-                    id="theme-file"
-                    type="file"
-                    hidden
-                    accept=".json"
-                    onChange={this.getFile}
-                />
+                <label>
+                    Choose Theme:
+                    <input
+                        ref={this.inputRef}
+                        type="file"
+                        hidden={true}
+                        accept=".json"
+                        onChange={this.getFile}
+                    />
+                </label>
                 <div id="selectors">
-                    <HoverButton
-                        id="theme-browse"
-                        {...buttonProps}
-                        onClick={() => {
-                            document.getElementById('theme-file')!.click();
-                        }}
-                    >
+                    <HoverButton id="theme-browse" {...buttonProps} onClick={this.clickInput}>
                         Browse...
                     </HoverButton>
-                    <select id="folder-list" onChange={this.selectFile}>
+                    <select ref={this.folderRef} id="folder-list" onChange={this.selectFile}>
                         {options}
                     </select>
                 </div>
@@ -81,8 +79,7 @@ export default class ThemePicker extends React.Component<{
     };
 
     selectFile = () => {
-        const input = document.getElementById('folder-list') as HTMLSelectElement;
-        this.validateAndChange(input.value);
+        this.validateAndChange(this.folderRef.current!.value);
     };
 
     validateAndChange = (file: string) => {
@@ -116,7 +113,7 @@ export default class ThemePicker extends React.Component<{
     };
 
     getFile = () => {
-        const input = document.getElementById('theme-file') as HTMLInputElement;
+        const input = this.inputRef.current!;
         if (input.files && input.files.length > 0) {
             const file = input.files[0].path;
             this.validateAndChange(file);
@@ -130,4 +127,8 @@ export default class ThemePicker extends React.Component<{
         }
         return <div className="error-list">{list}</div>;
     }
+
+    clickInput = () => {
+        this.inputRef.current!.click();
+    };
 }

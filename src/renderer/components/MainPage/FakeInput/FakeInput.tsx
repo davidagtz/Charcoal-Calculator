@@ -14,6 +14,9 @@ export default class FakeInput extends React.Component<{
 }> {
     interval = null as null | NodeJS.Timeout;
     x = 0;
+    textAreaRef: React.RefObject<HTMLTextAreaElement>;
+    cursorRef: React.RefObject<HTMLDivElement>;
+    replaceRef: React.RefObject<HTMLDivElement>;
 
     constructor(props: any) {
         super(props);
@@ -27,30 +30,36 @@ export default class FakeInput extends React.Component<{
         this.blur = this.blur.bind(this);
         this.focus = this.focus.bind(this);
         this._put = this._put.bind(this);
+
+        this.textAreaRef = React.createRef();
+        this.cursorRef = React.createRef();
+        this.replaceRef = React.createRef();
     }
 
     prev: string = '1';
     render() {
+        const { id } = this.props;
+
         return (
             <div
-                id={this.props.id}
-                className={'fake-input ' + (this.props.className ? this.props.className : '')}
+                className={`fake-input ${this.props.className ? this.props.className : ''}`}
                 style={this.props.style}
                 onMouseDown={this.focus}
             >
                 <textarea
-                    id={this.props.id + '-text'}
+                    ref={this.textAreaRef}
                     className="hide-text"
+                    id={`${id}-text`}
                     onChange={this.onChange}
                     onBlur={this.blur}
                     onKeyUp={this.onKeyPress}
                     onFocus={this.focus}
                     data-key={this.props['data-key']}
                 />
-                <span id={this.props.id + '-span'}>
-                    <div id={this.props.id + '-cursor'} className="cursor" />
-                    <div id={this.props.id + '-replace'}>
-                        <div id={this.props.id + '-fo'} />
+                <span>
+                    <div ref={this.cursorRef} className="cursor" />
+                    <div ref={this.replaceRef}>
+                        <div id={`${id}-fo`} />
                     </div>
                 </span>
             </div>
@@ -58,10 +67,10 @@ export default class FakeInput extends React.Component<{
     }
 
     onChange() {
-        const text = this.getTextArea();
-        const val = text.value;
+        const textArea = this.getTextArea();
+        const val = textArea.value;
         if (val[val.length - 1] === '\n') {
-            text.value = val.substring(0, val.length);
+            textArea.value = val.substring(0, val.length);
             return;
         }
         this.changeText();
@@ -73,38 +82,33 @@ export default class FakeInput extends React.Component<{
         if (this.props.onKeyPress) {
             this.props.onKeyPress(e, this.prev);
         }
-        this.prev = this.getTextArea().value;
+        this.prev = this.getText();
     }
 
     changeText() {
-        const text = this.getTextArea();
-
-        const replace = document.getElementById(this.props.id + '-replace')!;
+        const replace = this.replaceRef.current!;
         replace.innerHTML = '';
 
-        const parser = new ErrorFreeParser(text.value);
+        const parser = new ErrorFreeParser(this.getText());
         replace.appendChild(charFormatHTML(parser.parseAll(), this.props.id + '-fo'));
     }
 
-    cursor: HTMLDivElement | null = null;
     index = 0;
     find = 0;
     putCursor() {
         const eq = document.getElementById(this.props.id + '-fo') as HTMLDivElement;
-        this.cursor = document.getElementById(this.props.id + '-cursor') as HTMLDivElement;
 
-        this.cursor.style.height = '0';
-        this.cursor.style.height = getComputedStyle(
-            document.getElementById(this.props.id + '-replace')!
-        ).height;
-        this.cursor.style.top = '0';
+        const cursor = this.getCursor();
+        cursor.style.height = '0';
+        cursor.style.height = getComputedStyle(this.replaceRef.current!).height;
+        cursor.style.top = '0';
 
         this.find = this.getTextArea().selectionStart;
         this.index = 0;
-        this.x = this.cursor.clientWidth;
+        this.x = cursor.clientWidth;
 
         if (this.find === 0 && eq.children.length === 0) {
-            this.cursor.style.left = '0';
+            cursor.style.left = '0';
             return;
         }
 
@@ -112,7 +116,7 @@ export default class FakeInput extends React.Component<{
     }
 
     _put(this: any, el: Element): boolean {
-        const cursor = this.cursor;
+        const cursor = this.getCursor();
         const find = this.find;
         for (let i = 0; i < el.children.length; i++) {
             const child = el.children[i];
@@ -175,21 +179,28 @@ export default class FakeInput extends React.Component<{
     }
 
     getTextArea() {
-        return document.getElementById(this.props.id + '-text') as HTMLTextAreaElement;
+        return this.textAreaRef.current!;
+    }
+
+    getText() {
+        return this.getTextArea().value;
+    }
+
+    getCursor() {
+        return this.cursorRef.current!;
     }
 
     blur() {
-        const cursor = document.getElementById(this.props.id + '-cursor') as HTMLElement;
-        cursor.className = 'cursor';
+        this.getCursor().className = 'cursor';
         clearInterval(this.interval!);
         this.interval = null;
     }
 
     focus() {
         if (this.interval) return;
-        const input = this.getTextArea();
+
         this.interval = setInterval(() => {
-            const cursor = document.getElementById(this.props.id + '-cursor') as HTMLElement;
+            const cursor = this.getCursor();
             if (cursor.className === 'cursor') {
                 cursor.className = 'cursor active';
             } else {
@@ -197,9 +208,7 @@ export default class FakeInput extends React.Component<{
             }
         }, 500);
 
-        // this.putCursor();
-
-        setTimeout(() => input.focus(), 0);
+        setTimeout(() => this.getTextArea().focus(), 0);
     }
 
     componentWillUnmount() {

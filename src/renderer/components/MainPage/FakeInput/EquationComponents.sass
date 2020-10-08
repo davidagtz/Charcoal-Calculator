@@ -5,8 +5,12 @@
      *
           vertical-align: text-top
      div
-          display: inline-block
-          vertical-align: middle
+          display: flex
+          flex-wrap: nowrap
+          align-items: center
+          >*
+               flex-grow: 0
+               flex-shrink: 0
 
 .format-division
      font-size: .75em
@@ -16,7 +20,7 @@
           display: block
           background-color: #000000
           height: .1em
-          
+
 .format-subtraction
      >.sign
           height: .05em
