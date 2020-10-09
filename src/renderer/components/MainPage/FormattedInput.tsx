@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import Parser from '../Tools/brains/Parser';
 import { calculate, toTex } from '../Tools/brains/Calculator';
 import { ExpressionProps, StyleSchema } from '../Tools/brains/Types';
 import FakeInput from './FakeInput/FakeInput';
 import { isFunction, toFunction } from '../Tools/brains/ParseNode';
-require('./styles/FormattedInput.sass');
+import './styles/FormattedInput.sass';
 
 interface Props extends ExpressionProps {
     style: StyleSchema;

@@ -1,8 +1,8 @@
 import React, { CSSProperties } from 'react';
 import ErrorFreeParser from '../../Tools/brains/ErrorFreeParser';
 import { charFormatHTML } from './FormatterHTML';
-require('./FakeInput.sass');
-require('./EquationComponents.sass');
+import './FakeInput.sass';
+import './EquationComponents.sass';
 
 export default class FakeInput extends React.Component<{
     style: CSSProperties;
@@ -96,15 +96,20 @@ export default class FakeInput extends React.Component<{
     index = 0;
     find = 0;
     putCursor() {
+        // Equation Container
         const eq = document.getElementById(this.props.id + '-fo') as HTMLDivElement;
 
+        // Reset Cursor Styling
         const cursor = this.getCursor();
         cursor.style.height = '0';
         cursor.style.height = getComputedStyle(this.replaceRef.current!).height;
         cursor.style.top = '0';
 
+        // Cursor Index
         this.find = this.getTextArea().selectionStart;
+        // Current Index
         this.index = 0;
+        // Real X
         this.x = cursor.clientWidth;
 
         if (this.find === 0 && eq.children.length === 0) {
@@ -112,39 +117,57 @@ export default class FakeInput extends React.Component<{
             return;
         }
 
-        this._put(eq);
+        console.log(this._put(eq));
     }
 
-    _put(this: any, el: Element): boolean {
+    /**
+     * This function places the cursor where the text
+     * is selected in the textarea.
+     *
+     * @param {string} el The element to use
+     * @return {boolean} whether cursor was found
+     */
+    _put(el: Element): boolean {
         const cursor = this.getCursor();
         const find = this.find;
+
         for (let i = 0; i < el.children.length; i++) {
+            // Child to be evaluated
             const child = el.children[i];
-            const value = child.innerHTML;
-            const innerI = find - this.index;
+            // The distance to the desired index
+            const DIST = find - this.index;
 
             if (child.className === 'format-value') {
-                if (this.index <= find && find <= this.index + value.length) {
+                // The Numeric Value of the div
+                const value = child.innerHTML;
+
+                // Check if the desired index is in middle of the value
+                if (DIST >= 0 && DIST <= value.length) {
+                    // Width of start to desired index
                     const nX = this.textWidth(
-                        value.substring(0, innerI),
+                        value.substring(0, DIST),
                         getComputedStyle(child).font
                     );
                     cursor.style.left = `${this.x + nX}px`;
 
                     return true;
                 }
+
                 this.x += child.clientWidth;
                 this.index += value.length;
             } else if (child.className === 'sign') {
                 const nX = child.getBoundingClientRect().width;
-                if (this.index <= find && find <= this.index + 1) {
+                if (DIST === 1) {
                     cursor.style.left = `${this.x + nX}px`;
+                    return true;
+                } else if (DIST === 0) {
+                    cursor.style.left = `${this.x}px`;
                     return true;
                 }
                 this.x += nX;
                 this.index++;
             } else if (child.className === 'raise') {
-                if (this.index <= find && find <= this.index + 1) {
+                if (DIST >= 0 && DIST <= 1) {
                     cursor.style.left = this.x + 'px';
                     cursor.style.height = child.clientHeight + 'px';
                     cursor.style.top = '-.75em';
@@ -178,18 +201,6 @@ export default class FakeInput extends React.Component<{
         return this.fakeEl.offsetWidth;
     }
 
-    getTextArea() {
-        return this.textAreaRef.current!;
-    }
-
-    getText() {
-        return this.getTextArea().value;
-    }
-
-    getCursor() {
-        return this.cursorRef.current!;
-    }
-
     blur() {
         this.getCursor().className = 'cursor';
         clearInterval(this.interval!);
@@ -213,5 +224,17 @@ export default class FakeInput extends React.Component<{
 
     componentWillUnmount() {
         if (this.interval) clearInterval(this.interval);
+    }
+
+    getTextArea() {
+        return this.textAreaRef.current!;
+    }
+
+    getText() {
+        return this.getTextArea().value;
+    }
+
+    getCursor() {
+        return this.cursorRef.current!;
     }
 }
