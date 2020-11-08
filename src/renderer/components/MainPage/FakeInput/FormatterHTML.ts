@@ -36,8 +36,10 @@ function _charFormatHTML(tree: ParseNode): HTMLElement {
                 node.className = 'format-division';
 
                 if (tree.left) node.appendChild(_charFormatHTML(tree.left));
+                else node.appendChild(makeEmptyValue());
                 node.appendChild(sign);
                 if (tree.right) node.appendChild(_charFormatHTML(tree.right));
+                else node.appendChild(makeEmptyValue());
 
                 return node;
             case '+':
@@ -92,4 +94,10 @@ function _charFormatHTML(tree: ParseNode): HTMLElement {
         }
     }
     throw new Error('Node Type not supported');
+}
+
+function makeEmptyValue() {
+    const el = document.createElement('div');
+    el.className = 'format-value';
+    return el;
 }

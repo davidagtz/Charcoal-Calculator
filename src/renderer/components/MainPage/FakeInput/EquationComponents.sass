@@ -21,15 +21,26 @@
           background-color: #000000
           height: .1em
           width: 100%
+          min-width: .5em
+     >div:empty:not(.sign)
+          height: .6em
+          width: 80%
+          background-color: #ddd
+          margin-top: .3em
+          margin-bottom: .3em
 
 .format-exponent
      position: relative
+     min-height: 1em
      >.raise
           position: relative
           top: -.75em
           font-size: .5em
           line-height: 1em
           min-height: 1em
+          &:empty
+               width: .5em
+               background-color: #eee
 
 .format-addition > .sign
      // Size
@@ -41,13 +52,19 @@
      width: .3em
      // Color
      background-color: #000000
+     // Margin
+     box-sizing: content-box
+     border: .05em solid transparent
+     background-clip: padding-box
 
 .format-multiplication > .sign
-     box-sizing: content-box
      // Shape
      height: .15em
      width: .15em
      border-radius: 50%
      // Color
      background-color: #000
-     margin: .1em
+     // Margin
+     box-sizing: content-box
+     border: .05em solid transparent
+     background-clip: padding-box
