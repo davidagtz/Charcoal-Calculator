@@ -12,22 +12,27 @@
                flex-grow: 0
                flex-shrink: 0
 
+$division-half: 1.14em
 .format-division
      font-size: .75em
      flex-direction: column
+     line-height: $division-half
+     padding-right: .5rem
+     padding-left: .5rem
      >.sign
-          line-height: 1em
           display: block
           background-color: #000000
           height: .1em
           width: 100%
           min-width: .5em
      >div:empty:not(.sign)
-          height: .6em
+          height: $division-half
+          box-sizing: border-box
           width: 80%
           background-color: #ddd
-          margin-top: .3em
-          margin-bottom: .3em
+          border: $division-half *.2 solid white
+          border-left: none
+          border-right: none
 
 .format-exponent
      position: relative

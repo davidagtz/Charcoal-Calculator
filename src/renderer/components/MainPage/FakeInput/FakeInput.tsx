@@ -3,6 +3,7 @@ import ErrorFreeParser from '../../Tools/brains/ErrorFreeParser';
 import { charFormatHTML } from './FormatterHTML';
 import './FakeInput.sass';
 import './EquationComponents.sass';
+import { nativeImage } from 'electron';
 
 export default class FakeInput extends React.Component<{
     style: CSSProperties;
@@ -14,6 +15,7 @@ export default class FakeInput extends React.Component<{
 }> {
     interval = null as null | NodeJS.Timeout;
     x = 0;
+    top = 0;
     textAreaRef: React.RefObject<HTMLTextAreaElement>;
     cursorRef: React.RefObject<HTMLDivElement>;
     replaceRef: React.RefObject<HTMLDivElement>;
@@ -57,10 +59,12 @@ export default class FakeInput extends React.Component<{
                     data-key={this.props['data-key']}
                 />
                 <span>
-                    <div ref={this.cursorRef} className="cursor" />
-                    <div ref={this.replaceRef}>
-                        <div id={`${id}-fo`} />
-                    </div>
+                    <span>
+                        <div ref={this.cursorRef} className="cursor" />
+                        <div ref={this.replaceRef}>
+                            <div id={`${id}-fo`} />
+                        </div>
+                    </span>
                 </span>
             </div>
         );
@@ -109,7 +113,7 @@ export default class FakeInput extends React.Component<{
         } else {
             cursor.style.height = '1em';
         }
-        cursor.style.top = '0';
+        this.setTop(0);
 
         // Cursor Index
         this.find = this.getTextArea().selectionStart;
@@ -124,6 +128,7 @@ export default class FakeInput extends React.Component<{
         }
 
         this._put(eq);
+        console.log(this.top);
     }
 
     /**
@@ -137,18 +142,54 @@ export default class FakeInput extends React.Component<{
         const cursor = this.getCursor();
         const find = this.find;
 
-        // if (el.className === 'format-division') {
-        //     const top = cursor.style.top;
-        //     const height = cursor.style.height;
-        //     cursor.style.top = '-.5em';
-        //     cursor.style.height = '.5em';
-        //     if (this._put(el.children[0])) return true;
-        //     this.index++;
-        //     cursor.style.top = '-1em';
-        //     if (this._put(el.children[2])) return true;
-        //     cursor.style.top = top;
-        //     cursor.style.height = height;
-        // }
+        // console.log(el.className);
+        if (el.className === 'format-division') {
+            const totalWidth = el.getBoundingClientRect().width;
+
+            // Saved styles
+            const top = this.top;
+            const height = cursor.style.height;
+            const prevX = this.x;
+
+            cursor.style.height = `${el.children[0].getBoundingClientRect().height}px`;
+            const w1 = el.children[0].getBoundingClientRect().width;
+            this.x += (totalWidth - w1) / 2;
+            if (this._put(el.children[0])) return true;
+
+            cursor.style.height = `${el.children[2].getBoundingClientRect().height}px`;
+            this.index++;
+            const b2 = el.children[2].getBoundingClientRect();
+            const w2 = b2.width;
+            this.top = b2.y - el.getBoundingClientRect().y;
+            this.x = prevX + (totalWidth - w2) / 2;
+            if (this._put(el.children[2])) return true;
+
+            // Returning styles
+            this.top = top;
+            cursor.style.height = height;
+            // Adding total division
+            this.x = prevX + totalWidth;
+            return false;
+        } else if (el.className === 'format-value') {
+            // The distance to the desired index
+            const DIST = find - this.index;
+
+            // The Numeric Value of the div
+            const value = el.innerHTML;
+
+            // Check if the desired index is in middle of the value
+            if (DIST >= 0 && DIST <= value.length) {
+                // Width of start to desired index
+                const nX = this.textWidth(value.substring(0, DIST), getComputedStyle(el).font);
+                cursor.style.left = `${this.x + nX}px`;
+                cursor.style.top = `${this.top}px`;
+                return true;
+            }
+
+            this.x += el.clientWidth;
+            this.index += value.length;
+            return false;
+        }
 
         for (let i = 0; i < el.children.length; i++) {
             // Child to be evaluated
@@ -156,34 +197,18 @@ export default class FakeInput extends React.Component<{
             // The distance to the desired index
             const DIST = find - this.index;
 
-            if (child.className === 'format-value') {
-                // The Numeric Value of the div
-                const value = child.innerHTML;
-
-                // Check if the desired index is in middle of the value
-                if (DIST >= 0 && DIST <= value.length) {
-                    // Width of start to desired index
-                    const nX = this.textWidth(
-                        value.substring(0, DIST),
-                        getComputedStyle(child).font
-                    );
-                    cursor.style.left = `${this.x + nX}px`;
-
-                    return true;
-                }
-
-                this.x += child.clientWidth;
-                this.index += value.length;
-            } else if (child.className === 'sign') {
+            if (child.className === 'sign') {
                 const nX = child.getBoundingClientRect().width;
 
                 // After the sign
                 if (DIST === 1) {
+                    cursor.style.top = `${this.top}px`;
                     cursor.style.left = `${this.x + nX}px`;
                     return true;
                 }
                 // Before the sign
                 else if (DIST === 0) {
+                    cursor.style.top = `${this.top}px`;
                     cursor.style.left = `${this.x}px`;
                     return true;
                 }
@@ -195,17 +220,17 @@ export default class FakeInput extends React.Component<{
                 if (DIST >= 0 && DIST <= 1) {
                     cursor.style.left = this.x + 'px';
                     cursor.style.height = child.clientHeight + 'px';
-                    cursor.style.top = '-.7em';
+                    this.setTop(child.getBoundingClientRect().y - el.getBoundingClientRect().y);
                     return true;
                 }
                 this.index++;
 
-                const top = cursor.style.top;
+                const top = this.top;
                 const height = cursor.style.height;
-                cursor.style.top = '-.7em';
+                this.top = child.getBoundingClientRect().y - el.getBoundingClientRect().y;
                 cursor.style.height = child.clientHeight + 'px';
                 if (this._put(child)) return true;
-                cursor.style.top = top;
+                this.top = top;
                 cursor.style.height = height;
             } else {
                 if (this._put(child)) return true;
@@ -261,5 +286,14 @@ export default class FakeInput extends React.Component<{
 
     getCursor() {
         return this.cursorRef.current!;
+    }
+
+    moveTop(dx: number) {
+        this.setTop(this.top + dx);
+    }
+
+    setTop(y: number) {
+        this.top = y;
+        this.getCursor().style.top = `${this.top}px`;
     }
 }

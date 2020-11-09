@@ -9,8 +9,12 @@ div.fake-input
      margin: 0
      vertical-align: text-top
      min-height: 4rem
-     span > div
+     >span
           display: inline-block
+          >span
+               display: flex
+               >div
+                    display: inline-block
      div
           display: flex
           line-height: 1.14
@@ -27,7 +31,7 @@ div.fake-input
           height: 1em
           margin: 0
           padding: 0
-          vertical-align: bottom
+          // vertical-align: bottom
           width: 2px
           z-index: 1
           &.active
