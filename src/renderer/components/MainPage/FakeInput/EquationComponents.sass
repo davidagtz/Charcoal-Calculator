@@ -37,6 +37,15 @@ $division-half: 1.14em
 .format-exponent
      position: relative
      min-height: 1em
+     div:empty:not(.raise)
+          background-color: #ddd
+          width: .6em
+          height: 1em
+          box-sizing: border-box
+          background-clip: padding-box
+          border: .05em solid transparent
+          border-top: none
+          border-bottom: none
      >.raise
           position: relative
           top: -.75em
@@ -45,7 +54,7 @@ $division-half: 1.14em
           min-height: 1em
           &:empty
                width: .5em
-               background-color: #eee
+               background-color: #ddd
 
 .format-addition > .sign
      // Size

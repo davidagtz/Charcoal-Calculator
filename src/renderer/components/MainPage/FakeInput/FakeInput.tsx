@@ -128,7 +128,7 @@ export default class FakeInput extends React.Component<{
         }
 
         this._put(eq);
-        console.log(this.top);
+        // console.log(this.top);
     }
 
     /**

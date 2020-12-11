@@ -62,6 +62,7 @@ function _charFormatHTML(tree: ParseNode): HTMLElement {
             case '^':
                 node.className = 'format-exponent';
                 if (tree.left) node.appendChild(_charFormatHTML(tree.left));
+                else node.appendChild(makeEmptyValue());
 
                 sign.className = 'raise';
                 if (tree.right) sign.appendChild(_charFormatHTML(tree.right));
