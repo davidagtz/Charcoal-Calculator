@@ -9,10 +9,12 @@ export enum TYPE {
 export interface Token {
     value: string | number | OP;
     type: TYPE;
+    asString?: string;
 }
 
 export interface ParseNode {
     value: string | number;
+    asString?: string;
     type: TYPE;
     left: ParseNode | null;
     right: ParseNode | null;

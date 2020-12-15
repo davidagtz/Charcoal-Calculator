@@ -19,9 +19,10 @@ export function iswhitespace(char: string) {
     return char === ' ';
 }
 
-export function makeToken(input: string | number | OP, type: TYPE) {
+export function makeToken(input: string | number | OP, type: TYPE, asString?: string) {
     return {
         type,
+        asString,
         value: input
     };
 }

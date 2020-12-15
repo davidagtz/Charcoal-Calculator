@@ -15,13 +15,15 @@ export function makeParseNode(
     value: string | number,
     type: TYPE,
     left: ParseNode | null = null,
-    right: ParseNode | null = null
+    right: ParseNode | null = null,
+    asString?: string
 ) {
     return {
         value,
         type,
         left,
-        right
+        right,
+        asString
     };
 }
 

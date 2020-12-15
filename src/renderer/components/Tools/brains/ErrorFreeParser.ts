@@ -82,8 +82,9 @@ export default class ErrorFreeParser {
         switch (this.now().type) {
             case TYPE.NUMBER:
                 const num = this.now().value as number;
+                const str = this.now().asString!;
                 this.pos += 1;
-                return makeParseNode(num, TYPE.NUMBER);
+                return makeParseNode(num, TYPE.NUMBER, null, null, str);
             case TYPE.OPERATION:
                 return this.parseRightOp(null, 0);
             case TYPE.VARIABLE:

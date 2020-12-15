@@ -16,7 +16,7 @@ export default function errorFreeTokenizer(input: string): Token[] {
                 str += input[i];
                 i += 1;
             } while (i < input.length && isnum(input[i]));
-            tokens.push(makeToken(parseInt(str, 10), TYPE.NUMBER));
+            tokens.push(makeToken(parseInt(str, 10), TYPE.NUMBER, str));
         } else if (isop(input, i, OPERATORS)) {
             const op = getop(input, i, OPERATORS);
             i += op!.op.length;

@@ -15,9 +15,14 @@ export function charFormatHTML(tree: (ParseNode | null)[], id: string = ''): HTM
 function _charFormatHTML(tree: ParseNode): HTMLElement {
     const node = document.createElement('div');
 
-    if (tree.type === TYPE.NUMBER || tree.type === TYPE.VARIABLE || tree.type === TYPE.UNKNOWN) {
+    if (tree.type === TYPE.VARIABLE || tree.type === TYPE.UNKNOWN) {
         node.className = 'format-value';
         node.innerHTML = tree.value as string;
+        return node;
+    }
+    if (tree.type === TYPE.NUMBER) {
+        node.className = 'format-value';
+        node.innerHTML = tree.asString!;
         return node;
     }
     if (tree.type === TYPE.OPERATION) {
