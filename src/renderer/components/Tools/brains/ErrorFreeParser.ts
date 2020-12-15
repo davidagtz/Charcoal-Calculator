@@ -1,6 +1,6 @@
 import { TYPE, OP, Token, ParseNode, InvalidCharacterError } from './Types';
 import { makeParseNode } from './ParseNode';
-import errorFreeTokenize from './ErrorFreeTokenizer';
+import errorFreeTokenizer from './errorFreeTokenizer';
 
 export default class ErrorFreeParser {
     tokens: Token[];
@@ -8,7 +8,7 @@ export default class ErrorFreeParser {
     exprs: (ParseNode | null)[] = [];
 
     constructor(input: string | Token[]) {
-        if (typeof input === 'string') this.tokens = errorFreeTokenize(input);
+        if (typeof input === 'string') this.tokens = errorFreeTokenizer(input);
         else this.tokens = input;
         this.pos = 0;
     }
@@ -74,7 +74,7 @@ export default class ErrorFreeParser {
             return makeParseNode('(', TYPE.PARENTHESES, expr, null);
         }
         this.pos += 1;
-        return makeParseNode(')', TYPE.PARENTHESES, expr, null);
+        return makeParseNode('()', TYPE.PARENTHESES, expr, null);
     }
 
     parsePrimary(): ParseNode | null {
@@ -91,6 +91,10 @@ export default class ErrorFreeParser {
                 this.pos += 1;
                 return makeParseNode(variable, TYPE.VARIABLE);
             case TYPE.PARENTHESES:
+                if (this.now().value === ')') {
+                    this.pos += 1;
+                    return makeParseNode(')', TYPE.PARENTHESES, null, null);
+                }
                 return this.parseParenExpr();
             case TYPE.UNKNOWN:
                 const u = this.now().value as string;

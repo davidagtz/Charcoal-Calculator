@@ -5,7 +5,9 @@ export function charFormatHTML(tree: (ParseNode | null)[], id: string = ''): HTM
     const node = document.createElement('div');
     node.id = id;
     node.className = 'formatted-output';
-    for (let i = 0; i < tree.length; i++) if (tree[i]) node.appendChild(_charFormatHTML(tree[i]!));
+    for (let i = 0; i < tree.length; i += 1) {
+        if (tree[i]) node.appendChild(_charFormatHTML(tree[i]!));
+    }
 
     return node;
 }
@@ -77,22 +79,23 @@ function _charFormatHTML(tree: ParseNode): HTMLElement {
         const signL = document.createElement('div');
         signL.className = 'sign';
         signL.innerHTML = '(';
-
-        if (tree.value === '(') {
+        if (tree.value === ')') {
+            signL.innerHTML = ')';
             node.appendChild(signL);
-            if (tree.left) node.appendChild(_charFormatHTML(tree.left));
             return node;
-        } else {
-            node.appendChild(signL);
-            if (tree.left) node.appendChild(_charFormatHTML(tree.left));
+        }
 
+        node.appendChild(signL);
+        if (tree.left) node.appendChild(_charFormatHTML(tree.left));
+
+        if (tree.value === '()') {
             const signR = document.createElement('div');
             signR.className = 'sign';
             signR.innerHTML = ')';
             node.appendChild(signR);
-
-            return node;
         }
+
+        return node;
     }
     throw new Error('Node Type not supported');
 }

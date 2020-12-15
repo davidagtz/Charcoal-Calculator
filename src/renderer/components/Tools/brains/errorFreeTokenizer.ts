@@ -2,7 +2,7 @@ import { Token, TYPE } from './Types';
 import { isalpha, makeToken, isnum, isop, getop, iswhitespace } from './JSChar';
 import { OPERATORS } from './Tokenizer';
 
-export default function errorFreeTokenize(input: string): Token[] {
+export default function errorFreeTokenizer(input: string): Token[] {
     let i = 0;
     const tokens: Token[] = [];
     while (i < input.length) {
@@ -28,7 +28,7 @@ export default function errorFreeTokenize(input: string): Token[] {
             i += 1;
         } else {
             tokens.push(makeToken(input[i], TYPE.UNKNOWN));
-            i++;
+            i += 1;
         }
     }
     return tokens;
